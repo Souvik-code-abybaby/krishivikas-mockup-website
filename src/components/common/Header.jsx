@@ -31,6 +31,7 @@ const navigate=useNavigate();
           onClick={() => navigate("/")}
         />
         <label className="search">
+          
           <input
             placeholder="Search for Tractors, vehicles, seeds..."
             aria-label="Search products"

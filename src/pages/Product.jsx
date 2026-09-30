@@ -42,7 +42,7 @@ export default function ProductPage({ setPage }) {
           <h1>Eicher 380</h1>
           <p>Tractor</p>
           <div className="detail-price">
-            ₹ 5,80,000 <small>(Ex-showroom price)</small>
+            ₹ 5,80,000 
           </div>
           <div className="spec-highlights">
             <div>
@@ -82,7 +82,7 @@ export default function ProductPage({ setPage }) {
             </div>
           </dl>
           <div className="detail-actions">
-            <button className="primary">Call On Road Price</button>
+            <button className="primary"> Contact Seller</button>
             <button className="outline" onClick={()=>navigate("/compare")}>
               ↻ Compare
             </button>
@@ -128,7 +128,7 @@ export default function ProductPage({ setPage }) {
           ))}
         </div>
         <aside className="support-cards">
-          <button onClick={() => setPage("emi")}>
+          {/* <button onClick={() => setPage("emi")}>
             <span className="support-icon">
               <Icon name="calculator" />
             </span>
@@ -137,7 +137,7 @@ export default function ProductPage({ setPage }) {
               <small>Plan your purchase</small>
             </span>
             <b onClick={()=>navigate("/emi")}>Check EMI →</b>
-          </button>
+          </button> */}
           <div>
             <h3>
               Compare with Similar Tractors{" "}

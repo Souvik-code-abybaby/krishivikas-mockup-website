@@ -10,7 +10,7 @@ export default function ProductCard({ product, boosted, compact, onOpen }) {
     <article className={`product-card ${compact ? "compact" : ""}`}>
       <div className="product-image">
  
-        <img src={product.image} alt={product.name} />
+        <img src={product.image} alt={product.name}  />
         {boosted && <span className="boosted">★ Boosted</span>}
         <button
           className={`wish ${liked ? "liked" : ""}`}
@@ -44,7 +44,7 @@ export default function ProductCard({ product, boosted, compact, onOpen }) {
         {!boosted && !compact && (
           <div className="product-actions">
             <button className="primary" onClick={()=>navigate("/product")}>
-              Call On Road Price
+              Contact Seller
             </button>
             <button className="outline" onClick={()=>navigate("/compare")}>↻ Compare</button>
           </div>
