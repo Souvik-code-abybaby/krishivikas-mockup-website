@@ -12,6 +12,11 @@ const A = `../src/assets/`;
 import { useQuery } from "@tanstack/react-query";
 import { getCategoryList } from "../services/api/categoryApi";
 import { useNavigate } from "react-router-dom";
+import farmerField from "../assets/farmer-field.jpg";
+import redTractor from "../assets/red-tractor.jpg";
+import cropSeedling from "../assets/crop-seedling.jpg";
+import sprayerField from "../assets/sprayer-field.jpg";
+import farmerRice from "../assets/farmer-rice.jpg";
 export default function HomePage({ setPage }) {
   const navigate=useNavigate();
   const DEFAULT_TOKEN = "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1"
@@ -36,11 +41,11 @@ export default function HomePage({ setPage }) {
   //   "Tyres",
   // ];
   const reels = [
-    ["farmer-field.jpg", "How to Improve Soil Health", "2:30", "12.5K"],
-    ["red-tractor.jpg", "Tractor Maintenance Tips", "2:17", "24.8K"],
-    ["crop-seedling.jpg", "Best Seeds for Higher Yield", "2:30", "18.5K"],
-    ["sprayer-field.jpg", "Pesticide Spraying Techniques", "3:45", "11.2K"],
-    ["farmer-rice.jpg", "Fertilizer Guide for Crops", "2:45", "16.7K"],
+    [farmerField, "How to Improve Soil Health", "2:30", "12.5K"],
+    [redTractor, "Tractor Maintenance Tips", "2:17", "24.8K"],
+    [cropSeedling, "Best Seeds for Higher Yield", "2:30", "18.5K"],
+    [sprayerField, "Pesticide Spraying Techniques", "3:45", "11.2K"],
+    [farmerRice, "Fertilizer Guide for Crops", "2:45", "16.7K"],
   ];
   const [faq, setFaq] = useState(null);
   const faqs = [
@@ -171,7 +176,7 @@ export default function HomePage({ setPage }) {
           <div className="reels">
             {reels.map(([image, title, time, views]) => (
               <article className="reel" key={title}>
-                <img src={`${A}${image}`} alt="" />
+                <img src={image} alt="" />
                 <div className="reel-shade"></div>
                 <button aria-label={`Play ${title}`}>
                   <Icon name="play" size={38} />
