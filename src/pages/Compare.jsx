@@ -81,12 +81,14 @@
 //     </main>
 //   );
 // }
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import Breadcrumb from "../components/Breadcrumb";
 import SectionTitle from "../components/SectionTitle";
 import { products } from "../../public/products";
 import { useQuery } from "@tanstack/react-query";
 import { getCategoryList } from "../services/api/categoryApi";
+import { useSelector } from "react-redux";
+
 // Replace with real data (API or products file): category -> brand -> models
 const CATALOG = {
   Tractor: {
@@ -99,14 +101,82 @@ const CATALOG = {
     "Preet": ["949", "987"],
   },
 };
+function CategorySelect({ options, value, onChange, disabled, className }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef(null);
 
+  // close when clicking outside
+  useEffect(() => {
+    const close = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setIsOpen(false);
+    };
+    document.addEventListener("mousedown", close);
+    return () => document.removeEventListener("mousedown", close);
+  }, []);
+
+  const current = options.find((c) => c.category_name === value);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        disabled={disabled}
+        onClick={() => setIsOpen((o) => !o)}
+        className={`${className} flex items-center justify-between text-left`}
+      >
+        <span className="flex items-center gap-2">
+          {current && (
+            <img src={current.category_icon} alt="" className="h-6 w-6 object-contain" />
+          )}
+          {current ? current.category_name : "Select category"}
+        </span>
+        <span>▾</span>
+      </button>
+
+      {isOpen && (
+        <ul className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white shadow-lg">
+          {options.map((c) => (
+            <li key={c.category_id}>
+              <button
+                type="button"
+                onClick={() => {
+                  onChange(c.category_id); // same string value as before
+                  setIsOpen(false);
+                }}
+                className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-gray-100"
+              >
+                <img src={c.category_icon} alt="" className="h-6 w-6 object-contain" />
+                <span>{c.category_name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 export default function ComparePage() {
+  const DEFAULT_TOKEN = "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1"
+    const token = useSelector((state) => state.auth.token)? useSelector((state) => state.auth.token):DEFAULT_TOKEN;
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
   const [selected, setSelected] = useState([]); // max 2 items: {category, brand, model}
-
+    const {
+    data: categoryList,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["category-list", 1, token], // Add the languageId to the queryKey for better cache management
+    queryFn: () => getCategoryList(1, token), // Pass a function that calls getCategoryList
+  });
+   const { data: brandList, isLoading: brandLoading } = useQuery({
+    queryKey: ["brand-list", categoryId, type, token],
+    queryFn: () => getBrandList(categoryId,"", token),
+    enabled: !!categoryId,
+  });
   // open the modal 1 second after mount
   useEffect(() => {
     const timer = setTimeout(() => setOpen(true), 1000);
@@ -128,6 +198,7 @@ export default function ComparePage() {
   };
 
   const handleCategory = (value) => {
+    console.log(value)
     setCategory(value);
     resetPicker(); // brand + model depend on the category
   };
@@ -299,7 +370,7 @@ export default function ComparePage() {
             </p>
 
             {/* Category (locked after the first item is saved) */}
-            <label className="block text-sm font-semibold mb-3">
+            {/* <label className="block text-sm font-semibold mb-3">
               Category
               <select
                 className={selectClass}
@@ -308,11 +379,27 @@ export default function ComparePage() {
                 disabled={selected.length === 1}
               >
                 <option value="">Select category</option>
-                {Object.keys(CATALOG).map((c) => (
-                  <option key={c} value={c}>{c}</option>
+                {categoryList.slice(0,2).map((c) => (
+                  <option key={c} value={c.category_name}><img src={c.category_icon} alt="" /><p>{c.category_name}</p></option>
+                ))}
+                   {categoryList.slice(5).map((c) => (
+                  <option key={c} value={c.category_name}><img src={c.category_icon} alt="" /><p>{c.category_name}</p></option>
                 ))}
               </select>
-            </label>
+            </label> */}
+            <div className="block text-sm font-semibold mb-3">
+  Category
+  <CategorySelect
+    className={selectClass}
+    value={category}
+    onChange={handleCategory}
+    disabled={selected.length === 1}
+    options={[
+      ...(categoryList ?? []).slice(0, 2),
+      ...(categoryList ?? []).slice(5),
+    ]}
+  />
+</div>
 
             {/* Brand appears after category */}
             {category && (
