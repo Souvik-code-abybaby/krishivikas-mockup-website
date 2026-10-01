@@ -140,8 +140,8 @@ export default function ProductPage({ setPage }) {
           </button> */}
           <div>
             <h3>
-              Compare with Similar Tractors{" "}
-              <button onClick={() => setPage("compare")}>View All →</button>
+              Compare with Similar Categories{" "}
+              <button onClick={() => navigate("/compare")}>View All →</button>
             </h3>
             <div className="similar">
               <ProductCard product={products[1]} compact />

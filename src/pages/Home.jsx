@@ -17,6 +17,7 @@ import redTractor from "../assets/red-tractor.jpg";
 import cropSeedling from "../assets/crop-seedling.jpg";
 import sprayerField from "../assets/sprayer-field.jpg";
 import farmerRice from "../assets/farmer-rice.jpg";
+import FaqSection from "../components/faqSection";
 export default function HomePage({ setPage }) {
   const navigate=useNavigate();
   const DEFAULT_TOKEN = "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1"
@@ -91,7 +92,7 @@ export default function HomePage({ setPage }) {
         </div>
 
     <section>
-  <SectionTitle title="Shop by Category" />
+  <SectionTitle title="Categories" />
   <div className="category-grid">
     {isLoading && <p>Loading categories...</p>}
     {isError && <p>Could not load categories.</p>}
@@ -158,7 +159,8 @@ export default function HomePage({ setPage }) {
         </section>
 
         <section>
-          <SectionTitle icon="star" title="Boosted Products" />
+          {/* <SectionTitle icon="star" title="Best Deals" /> */}
+           <SectionTitle  title="Best Deals" />
           <div className="product-strip">
             {products.slice(0, 5).map((p) => (
               <ProductCard
@@ -172,7 +174,8 @@ export default function HomePage({ setPage }) {
         </section>
 
         <section>
-          <SectionTitle icon="play" title="Watch & Learn (YT Reels)" />
+          {/* <SectionTitle icon="play" title="Watch & Learn (YT Reels)" /> */}
+          <SectionTitle  title="Watch & Learn (YT Reels)" />
           <div className="reels">
             {reels.map(([image, title, time, views]) => (
               <article className="reel" key={title}>
@@ -215,7 +218,8 @@ export default function HomePage({ setPage }) {
         </section>
 
         <section>
-          <SectionTitle icon="user" title="Nearby Sellers" />
+          {/* <SectionTitle icon="user" title="Discoveries For You" /> */}
+          <SectionTitle  title="Discoveries For You" />
           <div className="seller-grid">
             {[
               "Sharma Agro Traders",
@@ -248,10 +252,10 @@ export default function HomePage({ setPage }) {
           </div>
         </section>
 
-        <section>
-          <SectionTitle title="Frequently Asked Questions" />
-          <div className="faq-grid">
-            {faqs.map((q, i) => (
+        <slide>
+          {/* <SectionTitle title="Frequently Asked Questions" /> */}
+          {/* <div className="faq-grid"> */}
+            {/* {faqs.map((q, i) => (
               <button
                 className={`faq ${faq === i ? "open" : ""}`}
                 key={q}
@@ -267,9 +271,10 @@ export default function HomePage({ setPage }) {
                 </span>
        
               </button>
-            ))}
-          </div>
-        </section>
+            ))} */}
+            <FaqSection/>
+          {/* </div> */}
+        </slide>
 
       
       </main>

@@ -6,12 +6,12 @@ export default function ComparePage() {
   return (
     <main className="compare-page">
       <section className="compare-hero container">
-        <Breadcrumb items={["Home", "Compare Tractors"]} />
-        <h1>Compare Tractors</h1>
+        <Breadcrumb items={["Home", "Compare Categories"]} />
+        <h1>Compare Categories</h1>
         <p>
           Compare specifications, features and prices
           <br />
-          to choose the best tractor for your needs.
+          to choose the best category for your needs.
         </p>
       </section>
       <section className="compare-selector container">
@@ -45,7 +45,7 @@ export default function ComparePage() {
               <div className="selected-product">
                 <img src={p.image} alt={p.name} />
                 <h3>{p.name}</h3>
-                <p>Tractor&nbsp; | &nbsp;{p.hp}</p>
+                <p>Tractor</p>
               </div>
             </div>
           </article>
@@ -60,18 +60,20 @@ export default function ComparePage() {
             [products[2], products[3]],
           ].map((pair, i) => (
             <article className="comparison-card" key={i}>
-              <div>
+              <div className="">
                 {pair.map((p) => (
-                  <div key={p.name}>
-                    <span>{p.hp}</span>
+                  <div>    <div key={p.name}>
+                    {/* <span>{p.hp}</span> */}
                     <img src={p.image} alt={p.name} />
-                    <small>{p.category}</small>
-                    <h3>{p.name}</h3>
-                  </div>
+                    <div className="flex flex-col items-start"><small>{p.category}</small>
+                    <p className="text-xs">{p.name}</p></div>
+                    
+                  </div></div>
+              
                 ))}
-                <b>VS</b>
+                <b className="bg-[#13693A]">VS</b>
               </div>
-              <button>View Comparison →</button>
+              <button className="hover:bg-green-800/80 bg-green-700">View Comparison</button>
             </article>
           ))}
         </div>
