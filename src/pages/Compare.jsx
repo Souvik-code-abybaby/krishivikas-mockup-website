@@ -67,9 +67,9 @@
 //                     <img src={p.image} alt={p.name} />
 //                     <div className="flex flex-col items-start"><small>{p.category}</small>
 //                     <p className="text-xs">{p.name}</p></div>
-                    
+
 //                   </div></div>
-              
+
 //                 ))}
 //                 <b className="bg-[#13693A]">VS</b>
 //               </div>
@@ -81,14 +81,16 @@
 //     </main>
 //   );
 // }
-import { useEffect, useState,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Breadcrumb from "../components/Breadcrumb";
 import SectionTitle from "../components/SectionTitle";
 import { products } from "../../public/products";
 import { useQuery } from "@tanstack/react-query";
 import { getCategoryList } from "../services/api/categoryApi";
 import { useSelector } from "react-redux";
-
+import { getBrandList } from "../services/api/brandApi";
+import LogoSelect from "../components/compare/LogoSelect";
+import { getCategoryWiseProduct } from "../services/api/modelList";
 // Replace with real data (API or products file): category -> brand -> models
 const CATALOG = {
   Tractor: {
@@ -97,8 +99,8 @@ const CATALOG = {
     Mahindra: ["575 DI", "475 DI"],
   },
   Harvester: {
-    "Kubota": ["DC-68G", "DC-93G"],
-    "Preet": ["949", "987"],
+    Kubota: ["DC-68G", "DC-93G"],
+    Preet: ["949", "987"],
   },
 };
 function CategorySelect({ options, value, onChange, disabled, className }) {
@@ -114,7 +116,7 @@ function CategorySelect({ options, value, onChange, disabled, className }) {
     return () => document.removeEventListener("mousedown", close);
   }, []);
 
-  const current = options.find((c) => c.category_name === value);
+  const current = options.find((c) => String(c.category_id) === String(value));
 
   return (
     <div className="relative" ref={ref}>
@@ -126,7 +128,11 @@ function CategorySelect({ options, value, onChange, disabled, className }) {
       >
         <span className="flex items-center gap-2">
           {current && (
-            <img src={current.category_icon} alt="" className="h-6 w-6 object-contain" />
+            <img
+              src={current.category_icon}
+              alt=""
+              className="h-6 w-6 object-contain"
+            />
           )}
           {current ? current.category_name : "Select category"}
         </span>
@@ -134,7 +140,7 @@ function CategorySelect({ options, value, onChange, disabled, className }) {
       </button>
 
       {isOpen && (
-        <ul className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white shadow-lg">
+        <ul className="absolute z-50 mt-1 ml-1   max-h-60 w-full overflow-auto rounded-md  bg-none shadow-lg flex gap-2 py-2 ">
           {options.map((c) => (
             <li key={c.category_id}>
               <button
@@ -143,10 +149,14 @@ function CategorySelect({ options, value, onChange, disabled, className }) {
                   onChange(c.category_id); // same string value as before
                   setIsOpen(false);
                 }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-gray-100"
+                className="flex rounded-md flex-col w-25  gap-2 px-3 py-2 text-left bg-gray-100 justify-center items-center hover:ring-green-700 hover:ring"
               >
-                <img src={c.category_icon} alt="" className="h-6 w-6 object-contain" />
-                <span>{c.category_name}</span>
+                <img
+                  src={c.category_icon}
+                  alt=""
+                  className="h-10 w-10 object-auto"
+                />
+                <span className="line-clamp-1 text-xs">{c.category_name}</span>
               </button>
             </li>
           ))}
@@ -156,14 +166,17 @@ function CategorySelect({ options, value, onChange, disabled, className }) {
   );
 }
 export default function ComparePage() {
-  const DEFAULT_TOKEN = "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1"
-    const token = useSelector((state) => state.auth.token)? useSelector((state) => state.auth.token):DEFAULT_TOKEN;
+  const DEFAULT_TOKEN =
+    "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1";
+  const token = useSelector((state) => state.auth.token)
+    ? useSelector((state) => state.auth.token)
+    : DEFAULT_TOKEN;
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
   const [selected, setSelected] = useState([]); // max 2 items: {category, brand, model}
-    const {
+  const {
     data: categoryList,
     isLoading,
     isError,
@@ -172,19 +185,34 @@ export default function ComparePage() {
     queryKey: ["category-list", 1, token], // Add the languageId to the queryKey for better cache management
     queryFn: () => getCategoryList(1, token), // Pass a function that calls getCategoryList
   });
-   const { data: brandList, isLoading: brandLoading } = useQuery({
-    queryKey: ["brand-list", categoryId, type, token],
-    queryFn: () => getBrandList(categoryId,"", token),
-    enabled: !!categoryId,
+  const { data: brandList, isLoading: brandLoading } = useQuery({
+    queryKey: ["brand-list", category, token],
+    queryFn: () => getBrandList(category, "", token),
+    enabled: !!category,
   });
-  // open the modal 1 second after mount
+  console.log({ category, brandList });
+  const { data: modelList, isLoading: modelLoading } = useQuery({
+    queryKey: ["model-list", category, brand, token],
+    queryFn: () =>
+      getCategoryWiseProduct(
+        category,
+        "",
+        0,
+        "",
+        brand, // request body
+        token,
+      ),
+    enabled: !!category && !!brand,
+  });
+
+  console.log("modelList:", modelList, category, brand, token);
   useEffect(() => {
     const timer = setTimeout(() => setOpen(true), 1000);
     return () => clearTimeout(timer);
   }, []);
 
-  const brands = category ? Object.keys(CATALOG[category]) : [];
-  const models = category && brand ? CATALOG[category][brand] : [];
+  // const brands = category ? Object.keys(CATALOG[category]) : [];
+  // const models = category && brand ? CATALOG[category][brand] : [];
 
   const resetPicker = () => {
     setBrand("");
@@ -198,12 +226,13 @@ export default function ComparePage() {
   };
 
   const handleCategory = (value) => {
-    console.log(value)
+    console.log(value);
     setCategory(value);
     resetPicker(); // brand + model depend on the category
   };
 
   const handleBrand = (value) => {
+    console.log(value);
     setBrand(value);
     setModel(""); // model depends on the brand
   };
@@ -241,7 +270,7 @@ export default function ComparePage() {
 
   const selectClass =
     "w-full border border-gray-300 rounded-md h-10 px-3 mt-1 bg-white disabled:bg-gray-100";
-
+  console.log("brandList:", brandList);
   return (
     <main className="compare-page">
       <section className="compare-hero container">
@@ -298,30 +327,30 @@ export default function ComparePage() {
         })}
         <span className="vs">VS</span>
       </section> */}
-    <section className="compare-selector container">
+      <section className="compare-selector container">
         {[products[0], products[1]].map((p, i) => (
-        <article className="selector-panel" key={p.name}>
-          <header>
-             <h2>◉ Category {i + 1}</h2>
-               <button>↻ Change</button>
+          <article className="selector-panel" key={p.name}>
+            <header>
+              <h2>◉ Category {i + 1}</h2>
+              <button>↻ Change</button>
             </header>
             <div className="selector-body">
-             <div className="select-fields">
-               <label>
-                 Select Category
-                   <select>
-                   <option>Tractor</option>
-                   </select>
-               </label>
+              <div className="select-fields">
                 <label>
-                   Select Brand
+                  Select Category
+                  <select>
+                    <option>Tractor</option>
+                  </select>
+                </label>
+                <label>
+                  Select Brand
                   <select>
                     <option>{i ? "Swaraj" : "Eicher"}</option>
                   </select>
                 </label>
-                 <label>
+                <label>
                   Select Model
-               <select>
+                  <select>
                     <option>{i ? "735 FE" : "380"}</option>
                   </select>
                 </label>
@@ -331,8 +360,9 @@ export default function ComparePage() {
                 <h3>{p.name}</h3>
                 <p>Tractor</p>
               </div>
-            </div>          </article>
-         ))}
+            </div>{" "}
+          </article>
+        ))}
         <span className="vs">VS</span>
       </section>
       {/* Submit only appears when everything is filled */}
@@ -351,23 +381,23 @@ export default function ComparePage() {
       {open && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
           <div className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
-            <button
-              type="button"
-              onClick={closeModal}
-              className="absolute right-3 top-3 border rounded px-2 py-1"
-              aria-label="Close"
-            >
-              ✕
-            </button>
+         <button
+  type="button"
+  onClick={closeModal}
+  className="absolute right-3 top-3 border rounded px-2 py-1"
+  aria-label="Close"
+>
+  ✕
+</button>
 
-            <h2 className="text-xl font-bold text-[#13693A] mb-1">
-              Choose Category
-            </h2>
-            <p className="text-sm text-gray-500 mb-4">
-              {selected.length === 0
-                ? "Select the first item to compare."
-                : "Now select the second brand and model."}
-            </p>
+<h2 className="text-xl font-bold text-[#13693A] mb-1">
+  {category ? "Choose Brand" : "Choose Category"}
+</h2>
+<p className="text-sm text-gray-500 mb-4">
+  {selected.length === 0
+    ? "Select the first item to compare."
+    : "Now select the second brand and model."}
+</p>
 
             {/* Category (locked after the first item is saved) */}
             {/* <label className="block text-sm font-semibold mb-3">
@@ -387,36 +417,46 @@ export default function ComparePage() {
                 ))}
               </select>
             </label> */}
-            <div className="block text-sm font-semibold mb-3">
-  Category
-  <CategorySelect
-    className={selectClass}
-    value={category}
-    onChange={handleCategory}
-    disabled={selected.length === 1}
-    options={[
-      ...(categoryList ?? []).slice(0, 2),
-      ...(categoryList ?? []).slice(5),
-    ]}
-  />
-</div>
+     {/* Category: visible only until one is selected */}
+{!category && (
+  <div className="block text-sm font-semibold mb-3">
+    Category
+    <CategorySelect
+      className={selectClass}
+      value={category}
+      onChange={handleCategory}
+      options={[
+        ...(categoryList ?? []).slice(0, 2),
+        ...(categoryList ?? []).slice(5),
+      ]}
+    />
+  </div>
+)}
 
-            {/* Brand appears after category */}
-            {category && (
-              <label className="block text-sm font-semibold mb-3">
-                Brand
-                <select
-                  className={selectClass}
-                  value={brand}
-                  onChange={(e) => handleBrand(e.target.value)}
-                >
-                  <option value="">Select brand</option>
-                  {brands.map((b) => (
-                    <option key={b} value={b}>{b}</option>
-                  ))}
-                </select>
-              </label>
-            )}
+{/* Brand: visible only after a category is selected */}
+{category && (
+  <div className="block text-sm font-semibold mb-3">
+    Select Brand
+    <LogoSelect
+      className={selectClass}
+      placeholder={brandLoading ? "Loading brands..." : "Select brand"}
+      options={brandList ?? []}
+      value={brand}
+      onChange={handleBrand}
+      disabled={brandLoading}
+      idKey="brand_id"
+      nameKey="brand_name"
+      imgKey="brand_logo"
+      openKey={category}
+    />
+
+    {!brandLoading && brandList?.length === 0 && (
+      <p className="text-xs text-gray-500 mt-1">
+        No brands found for this category.
+      </p>
+    )}
+  </div>
+)}
 
             {/* Model appears after brand */}
             {brand && (
@@ -428,8 +468,10 @@ export default function ComparePage() {
                   onChange={(e) => handleModel(e.target.value)}
                 >
                   <option value="">Select model</option>
-                  {models.map((m) => (
-                    <option key={m} value={m}>{m}</option>
+                  {modelList?.map((m) => (
+                    <option key={m} value={m}>
+                      {m.model_name}
+                    </option>
                   ))}
                 </select>
               </label>
