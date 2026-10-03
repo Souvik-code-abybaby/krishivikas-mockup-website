@@ -91,6 +91,7 @@ import { useSelector } from "react-redux";
 import { getBrandList } from "../services/api/brandApi";
 import LogoSelect from "../components/compare/LogoSelect";
 import { getCategoryWiseProduct } from "../services/api/modelList";
+import ModelSelect from "../components/compare/ModelSelect";
 // Replace with real data (API or products file): category -> brand -> models
 const CATALOG = {
   Tractor: {
@@ -140,7 +141,7 @@ function CategorySelect({ options, value, onChange, disabled, className }) {
       </button>
 
       {isOpen && (
-        <ul className="absolute z-50 mt-1 ml-1   max-h-60 w-full overflow-auto rounded-md  bg-none shadow-lg flex gap-2 py-2 ">
+        <ul className="mt-2 flex w-full  gap-2 py-2 overflow-auto">
           {options.map((c) => (
             <li key={c.category_id}>
               <button
@@ -171,11 +172,13 @@ export default function ComparePage() {
   const token = useSelector((state) => state.auth.token)
     ? useSelector((state) => state.auth.token)
     : DEFAULT_TOKEN;
+  const [editIndex, setEditIndex] = useState(null); // which panel is being changed
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
   const [selected, setSelected] = useState([]); // max 2 items: {category, brand, model}
+  const [draft, setDraft] = useState(null); // first item, before "+ Add More"
   const {
     data: categoryList,
     isLoading,
@@ -218,10 +221,22 @@ export default function ComparePage() {
     setBrand("");
     setModel("");
   };
-
+  const buildItem = (modelObj) => ({
+    category: (categoryList ?? []).find(
+      (c) => String(c.category_id) === String(category),
+    ),
+    brand: (brandList ?? []).find(
+      (b) => String(b.brand_id ?? b.id) === String(brand),
+    ),
+    model: modelObj, // the clicked object, no lookup needed
+  });
   const closeModal = () => {
+    // keep a first item that was picked but not yet added
+    if (draft && selected.length === 0) setSelected([draft]);
+    setDraft(null);
     setOpen(false);
     setCategory("");
+    setEditIndex(null);
     resetPicker();
   };
 
@@ -238,34 +253,63 @@ export default function ComparePage() {
   };
 
   // second model chosen -> save both and close automatically
-  const handleModel = (value) => {
+  const handleModel = (value, modelObj) => {
     setModel(value);
-    if (selected.length === 1) {
-      setSelected([...selected, { category, brand, model: value }]);
+    const item = buildItem(modelObj);
+
+    if (editIndex !== null) {
+      setSelected((prev) => prev.map((s, i) => (i === editIndex ? item : s)));
       closeModal();
+    } else if (selected.length === 1) {
+      setSelected([...selected, item]);
+      closeModal();
+    } else {
+      setDraft(item); // first item: panel 1 fills immediately
     }
   };
-
-  // "Add More": save the first item and let the user pick brand + model again
   const handleAddMore = () => {
-    setSelected([{ category, brand, model }]);
+    setSelected([draft]);
+    setDraft(null);
     resetPicker();
   };
 
-  const handleChange = () => {
-    setSelected([]);
+  // Change button on a panel
+ const handleChange = (i) => {
+  setEditIndex(selected[i] ? i : null);
+  resetPicker();
+
+  if (i === 1 && selected[0]) {
+    // panel 2: reuse the category from panel 1
+    setCategory(selected[0].category?.category_id);
+  } else {
     setCategory("");
-    resetPicker();
-    setOpen(true);
-  };
+  }
+  setOpen(true);
+};
 
   const isComplete =
     selected.length === 2 &&
     selected.every((s) => s.category && s.brand && s.model);
-
   const handleSubmit = () => {
-    console.log("Compare:", selected);
-    // navigate to the comparison result / call API here
+    const payload = selected.map((s) => ({
+      category_id: s.category?.category_id,
+      brand_id: s.brand?.brand_id ?? s.brand?.id,
+      model_id: s.model?.model_id ?? s.model?.id,
+    }));
+    console.log("Compare:", payload);
+  };
+  // first item: the draft (before "+ Add More") or the saved one
+  const firstItem = selected[0] ?? draft;
+  const fm = firstItem?.model;
+  const firstName = fm?.model_name ?? fm?.name ?? fm?.title;
+  const firstImg = fm?.model_image ?? fm?.image ?? fm?.logo;
+
+  // remove the first card and start over
+  const removeFirst = () => {
+    setSelected([]);
+    setDraft(null);
+    setCategory("");
+    resetPicker();
   };
 
   const selectClass =
@@ -282,6 +326,7 @@ export default function ComparePage() {
           to choose the best category for your needs.
         </p>
       </section>
+      
 
       {/* Selected info (two panels) */}
       {/* <section className="compare-selector container">
@@ -328,41 +373,61 @@ export default function ComparePage() {
         <span className="vs">VS</span>
       </section> */}
       <section className="compare-selector container">
-        {[products[0], products[1]].map((p, i) => (
-          <article className="selector-panel" key={p.name}>
-            <header>
-              <h2>◉ Category {i + 1}</h2>
-              <button>↻ Change</button>
-            </header>
-            <div className="selector-body">
-              <div className="select-fields">
-                <label>
-                  Select Category
-                  <select>
-                    <option>Tractor</option>
-                  </select>
-                </label>
-                <label>
-                  Select Brand
-                  <select>
-                    <option>{i ? "Swaraj" : "Eicher"}</option>
-                  </select>
-                </label>
-                <label>
-                  Select Model
-                  <select>
-                    <option>{i ? "735 FE" : "380"}</option>
-                  </select>
-                </label>
+        {[0, 1].map((i) => {
+          // show the saved item, or the draft in the first empty slot
+          const item = selected[i] ?? (i === selected.length ? draft : null);
+          const m = item?.model;
+          const modelName = m?.model_name ?? m?.name ?? m?.title;
+          const img = m?.model_image ?? m?.image ?? m?.logo;
+
+          return (
+            <article className="selector-panel" key={i}>
+              <header>
+                <h2>◉ Category {i + 1}</h2>
+                <button type="button" onClick={() => handleChange(i)}>
+                  ↻ Change
+                </button>
+              </header>
+              <div className="selector-body">
+                <div className="select-fields">
+                  <label>
+                    Select Category
+                    <select value={item ? "v" : ""} disabled>
+                      <option value="">Not selected</option>
+                      {item && (
+                        <option value="v">
+                          {item.category?.category_name}
+                        </option>
+                      )}
+                    </select>
+                  </label>
+                  <label>
+                    Select Brand
+                    <select value={item ? "v" : ""} disabled>
+                      <option value="">Not selected</option>
+                      {item && (
+                        <option value="v">{item.brand?.brand_name}</option>
+                      )}
+                    </select>
+                  </label>
+                  <label>
+                    Select Model
+                    <select value={item ? "v" : ""} disabled>
+                      <option value="">Not selected</option>
+                      {item && <option value="v">{modelName}</option>}
+                    </select>
+                  </label>
+                </div>
+
+                <div className="selected-product">
+                  {img && <img src={img} alt={modelName} />}
+                  <h3>{modelName ?? "No model selected"}</h3>
+                  <p>{item?.category?.category_name ?? ""}</p>
+                </div>
               </div>
-              <div className="selected-product">
-                <img src={p.image} alt={p.name} />
-                <h3>{p.name}</h3>
-                <p>Tractor</p>
-              </div>
-            </div>{" "}
-          </article>
-        ))}
+            </article>
+          );
+        })}
         <span className="vs">VS</span>
       </section>
       {/* Submit only appears when everything is filled */}
@@ -381,23 +446,55 @@ export default function ComparePage() {
       {open && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
           <div className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
-         <button
-  type="button"
-  onClick={closeModal}
-  className="absolute right-3 top-3 border rounded px-2 py-1"
-  aria-label="Close"
->
-  ✕
-</button>
+            <button
+              type="button"
+              onClick={closeModal}
+              className="absolute right-3 top-3 border rounded px-2 py-1"
+              aria-label="Close"
+            >
+              ✕
+            </button>
 
-<h2 className="text-xl font-bold text-[#13693A] mb-1">
-  {category ? "Choose Brand" : "Choose Category"}
-</h2>
-<p className="text-sm text-gray-500 mb-4">
-  {selected.length === 0
-    ? "Select the first item to compare."
-    : "Now select the second brand and model."}
-</p>
+            <h2 className="text-xl font-bold text-[#13693A] mb-1">
+              {draft
+                ? "Add Another"
+                : brand
+                  ? "Choose Model"
+                  : category
+                    ? "Choose Brand"
+                    : "Choose Category"}
+            </h2>
+            {firstItem && editIndex === null && (
+        <div className="relative mb-4 flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-2 pr-8">
+          {firstImg && (
+            <img
+              src={firstImg}
+              alt={firstName}
+              className="h-12 w-12 shrink-0 rounded object-contain"
+            />
+          )}
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold">{firstName}</p>
+            <p className="truncate text-xs text-gray-500">
+              {firstItem.brand?.brand_name} •{" "}
+              {firstItem.category?.category_name}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={removeFirst}
+            aria-label="Remove first item"
+            className="absolute right-1 top-1 rounded px-1.5 text-xs text-gray-500 hover:bg-gray-200 hover:text-red-600"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+            <p className="text-sm text-gray-500 mb-4">
+              {selected.length === 0
+                ? "Select the first item to compare."
+                : "Now select the second brand and model."}
+            </p>
 
             {/* Category (locked after the first item is saved) */}
             {/* <label className="block text-sm font-semibold mb-3">
@@ -417,68 +514,82 @@ export default function ComparePage() {
                 ))}
               </select>
             </label> */}
-     {/* Category: visible only until one is selected */}
-{!category && (
-  <div className="block text-sm font-semibold mb-3">
-    Category
-    <CategorySelect
-      className={selectClass}
-      value={category}
-      onChange={handleCategory}
-      options={[
-        ...(categoryList ?? []).slice(0, 2),
-        ...(categoryList ?? []).slice(5),
-      ]}
-    />
-  </div>
-)}
-
-{/* Brand: visible only after a category is selected */}
-{category && (
-  <div className="block text-sm font-semibold mb-3">
-    Select Brand
-    <LogoSelect
-      className={selectClass}
-      placeholder={brandLoading ? "Loading brands..." : "Select brand"}
-      options={brandList ?? []}
-      value={brand}
-      onChange={handleBrand}
-      disabled={brandLoading}
-      idKey="brand_id"
-      nameKey="brand_name"
-      imgKey="brand_logo"
-      openKey={category}
-    />
-
-    {!brandLoading && brandList?.length === 0 && (
-      <p className="text-xs text-gray-500 mt-1">
-        No brands found for this category.
-      </p>
-    )}
-  </div>
-)}
-
-            {/* Model appears after brand */}
-            {brand && (
-              <label className="block text-sm font-semibold mb-3">
-                Model
-                <select
+            {/* Category: visible only until one is selected */}
+            {!category && (
+              <div className="block text-sm font-semibold mb-3">
+                Category
+                <CategorySelect
                   className={selectClass}
-                  value={model}
-                  onChange={(e) => handleModel(e.target.value)}
-                >
-                  <option value="">Select model</option>
-                  {modelList?.map((m) => (
-                    <option key={m} value={m}>
-                      {m.model_name}
-                    </option>
-                  ))}
-                </select>
-              </label>
+                  value={category}
+                  onChange={handleCategory}
+                  options={[
+                    ...(categoryList ?? []).slice(0, 2),
+                    ...(categoryList ?? []).slice(5),
+                  ]}
+                />
+              </div>
+            )}
+{category && !brand && editIndex === 1 && (
+  <p className="text-xs text-gray-500 mb-2">
+    Showing brands for {selected[0]?.category?.category_name}. To use a
+    different category, change Category 1.
+  </p>
+)}
+            {/* Brand: visible only after a category is selected */}
+            {/* Brand: visible after a category is selected, hidden once a brand is picked */}
+            {category && !brand && (
+              <div className="block text-sm font-semibold mb-3">
+                Brand
+                <LogoSelect
+                  className={selectClass}
+                  placeholder={
+                    brandLoading ? "Loading brands..." : "Select brand"
+                  }
+                  options={brandList ?? []}
+                  value={brand}
+                  onChange={handleBrand}
+                  disabled={brandLoading}
+                  idKey="brand_id"
+                  nameKey="brand_name"
+                  imgKey="brand_logo"
+                  openKey={category}
+                />
+                {!brandLoading && brandList?.length === 0 && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    No brands found for this category.
+                  </p>
+                )}
+              </div>
             )}
 
+            {/* Model appears after brand */}
+            {/* Model: appears after a brand is selected, list opens automatically */}
+            {brand && !draft && (
+              <div className="block text-sm font-semibold mb-3">
+                Model
+                <ModelSelect
+                  className={selectClass}
+                  placeholder={
+                    modelLoading ? "Loading models..." : "Select model"
+                  }
+                  options={modelList ?? []}
+                  value={model}
+                  onChange={handleModel}
+                  disabled={modelLoading}
+                  idKey="model_id"
+                  nameKey="model_name"
+                  imgKey="model_image"
+                  openKey={brand}
+                />
+                {!modelLoading && modelList?.length === 0 && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    No models found for this brand.
+                  </p>
+                )}
+              </div>
+            )}
             {/* Add More appears once the first model is chosen */}
-            {model && selected.length === 0 && (
+            {draft && selected.length === 0 && editIndex === null && (
               <button
                 type="button"
                 onClick={handleAddMore}

@@ -10,7 +10,8 @@ export default function LogoSelect({
   idKey,
   nameKey,
   imgKey,
-  openKey, // when this changes (and options are ready), the list opens itself
+  openKey,
+
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
@@ -51,30 +52,34 @@ export default function LogoSelect({
         <span>▾</span>
       </button>
 
-      {isOpen && (
-        <ul className="absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white shadow-lg">
-          {options.length === 0 && (
-            <li className="px-3 py-2 text-sm text-gray-500">No options found</li>
+     {isOpen && (
+  <ul className="mt-2 flex w-full  gap-2 py-2 overflow-auto">
+    {options.length === 0 && (
+      <li className="px-3 py-2 text-sm text-gray-500">No options found</li>
+    )}
+    {options.map((o, i) => (
+      <li key={getId(o) ?? i}>
+        <button
+          type="button"
+          onClick={() => {
+            onChange(getId(o));
+            setIsOpen(false);
+          }}
+          className="flex w-24 flex-col items-center justify-center gap-2 rounded-md bg-gray-100 px-3 py-2 text-left hover:ring hover:ring-green-700"
+        >
+          {getImg(o) && (
+            <img
+              src={getImg(o)}
+              alt=""
+              className="h-10 w-10 object-contain"
+            />
           )}
-          {options.map((o, i) => (
-            <li key={getId(o) ?? i}>
-              <button
-                type="button"
-                onClick={() => {
-                  onChange(getId(o));
-                  setIsOpen(false);
-                }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-gray-100"
-              >
-                {getImg(o) && (
-                  <img src={getImg(o)} alt="" className="h-6 w-6 object-contain" />
-                )}
-                <span>{getName(o)}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+          <span className="line-clamp-1 text-xs">{getName(o)}</span>
+        </button>
+      </li>
+    ))}
+  </ul>
+)}
     </div>
   );
 }
