@@ -141,7 +141,7 @@ function CategorySelect({ options, value, onChange, disabled, className }) {
       </button>
 
       {isOpen && (
-        <ul className="mt-2 flex w-full  gap-2 py-2 overflow-auto">
+        <ul className="mt-2  w-full  gap-2 py-2 grid grid-cols-3">
           {options.map((c) => (
             <li key={c.category_id}>
               <button
@@ -150,7 +150,7 @@ function CategorySelect({ options, value, onChange, disabled, className }) {
                   onChange(c.category_id); // same string value as before
                   setIsOpen(false);
                 }}
-                className="flex rounded-md flex-col w-25  gap-2 px-3 py-2 text-left bg-gray-100 justify-center items-center hover:ring-green-700 hover:ring"
+                className="flex rounded-md flex-col w-30  gap-2 px-3 py-2 text-left bg-gray-100 justify-center items-center hover:ring-green-700 hover:ring"
               >
                 <img
                   src={c.category_icon}
@@ -272,7 +272,17 @@ export default function ComparePage() {
     setDraft(null);
     resetPicker();
   };
-
+const removeItem = (i) => {
+  if (i === 0) {
+    // panel 2 depends on panel 1's category, so clear everything
+    setSelected([]);
+    setDraft(null);
+    setCategory("");
+    resetPicker();
+  } else {
+    setSelected((prev) => prev.slice(0, 1));
+  }
+};
   // Change button on a panel
  const handleChange = (i) => {
   setEditIndex(selected[i] ? i : null);
@@ -372,64 +382,93 @@ export default function ComparePage() {
         })}
         <span className="vs">VS</span>
       </section> */}
-      <section className="compare-selector container">
-        {[0, 1].map((i) => {
-          // show the saved item, or the draft in the first empty slot
-          const item = selected[i] ?? (i === selected.length ? draft : null);
-          const m = item?.model;
-          const modelName = m?.model_name ?? m?.name ?? m?.title;
-          const img = m?.model_image ?? m?.image ?? m?.logo;
+<section className="container relative mx-auto flex  gap-6 justify-center py-4">
+  {[0, 1].map((i) => {
+    // saved item, or the draft in the first empty slot
+    const item = selected[i] ?? (i === selected.length ? draft : null);
+    const m = item?.model;
+    const name = m?.model_name ?? m?.name ?? m?.title;
+    const img = m?.model_image ?? m?.image ?? m?.logo;
+    const price =
+      m?.price ?? m?.ex_showroom_price ?? m?.starting_price ?? null;
+    const label = selected[0]?.category?.category_name ?? "Category";
+    const catIcon = selected[0]?.category?.category_icon;
 
-          return (
-            <article className="selector-panel" key={i}>
-              <header>
-                <h2>◉ Category {i + 1}</h2>
-                <button type="button" onClick={() => handleChange(i)}>
-                  ↻ Change
-                </button>
-              </header>
-              <div className="selector-body">
-                <div className="select-fields">
-                  <label>
-                    Select Category
-                    <select value={item ? "v" : ""} disabled>
-                      <option value="">Not selected</option>
-                      {item && (
-                        <option value="v">
-                          {item.category?.category_name}
-                        </option>
-                      )}
-                    </select>
-                  </label>
-                  <label>
-                    Select Brand
-                    <select value={item ? "v" : ""} disabled>
-                      <option value="">Not selected</option>
-                      {item && (
-                        <option value="v">{item.brand?.brand_name}</option>
-                      )}
-                    </select>
-                  </label>
-                  <label>
-                    Select Model
-                    <select value={item ? "v" : ""} disabled>
-                      <option value="">Not selected</option>
-                      {item && <option value="v">{modelName}</option>}
-                    </select>
-                  </label>
-                </div>
+    /* ---------- Empty card: "Add Tractor" ---------- */
+    if (!item) {
+      return (
+        <button
+          key={i}
+          type="button"
+          onClick={() => handleChange(selected[0] ? 1 : 0)}
+          className="flex h-60 w-80 flex-col items-center justify-center gap-4 rounded-xl border border-slate-400 bg-[#F7FAFD] hover:border-[#13693A]"
+        >
+          <span className="flex h-24 w-24 items-center justify-center rounded-2xl border border-dashed border-slate-400 bg-white">
+            {catIcon ? (
+              <img src={catIcon} alt="" className="h-12 w-12 object-contain" />
+            ) : (
+              <span className="text-4xl text-slate-400">+</span>
+            )}
+          </span>
+          <span className="text-base font-medium text-slate-800 underline underline-offset-4">
+            Add {label}
+          </span>
+        </button>
+      );
+    }
 
-                <div className="selected-product">
-                  {img && <img src={img} alt={modelName} />}
-                  <h3>{modelName ?? "No model selected"}</h3>
-                  <p>{item?.category?.category_name ?? ""}</p>
-                </div>
-              </div>
-            </article>
-          );
-        })}
-        <span className="vs">VS</span>
-      </section>
+    /* ---------- Filled card ---------- */
+    return (
+      <article
+        key={i}
+        className="relative overflow-hidden rounded-xl bg-white shadow-md w-80"
+      >
+        <button
+          type="button"
+          onClick={() => removeItem(i)}
+          aria-label="Remove"
+          className="absolute right-2 top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs shadow hover:text-red-600"
+        >
+          ✕
+        </button>
+
+        {img ? (
+          <img src={img} alt={name} className="h-44 w-full object-cover" />
+        ) : (
+          <div className="flex h-44 w-full items-center justify-center bg-gray-100 text-sm text-gray-400">
+            No image
+          </div>
+        )}
+
+        <div className="p-4">
+          <h3 className="text-lg font-semibold text-[#3B5B9A]">{name}</h3>
+          <p className="mt-1 text-sm text-gray-500">
+            {item.brand?.brand_name} • {item.category?.category_name}
+          </p>
+
+          {/* {price && (
+            <>
+              <p className="mt-3 text-sm text-gray-500">Ex-Showroom Price</p>
+              <p className="font-semibold text-gray-900">₹ {price}</p>
+            </>
+          )} */}
+
+          <button
+            type="button"
+            onClick={() => handleChange(i)}
+            className="mt-4 w-full rounded-lg bg-[#13693A] py-3 font-bold text-white hover:opacity-90"
+          >
+            Change
+          </button>
+        </div>
+      </article>
+    );
+  })}
+
+  {/* <span className="absolute left-1/2 top-1/2 z-10 hidden h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#13693A] text-sm font-bold text-white md:flex">
+    VS
+  </span> */}
+</section>
       {/* Submit only appears when everything is filled */}
       {isComplete && (
         <div className="container flex justify-center mt-6">

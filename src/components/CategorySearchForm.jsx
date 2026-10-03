@@ -273,7 +273,7 @@ const CategorySearchForm = ({
       className={
         variant === "static"
           ? "category-search-form-wrapper relative z-30 w-full max-w-[420px] mx-auto"
-          : "category-search-form-wrapper relative lg:absolute z-30 w-[100%] mx-auto -mt-0 lg:mt-0 lg:w-auto lg:mx-0 lg:left-14 lg:top-8 max-w-none lg:max-w-[380px]"
+          : "category-search-form-wrapper relative lg:absolute z-30 w-[100%] mx-auto -mt-0 lg:mt-0 lg:w-auto lg:mx-0 lg:right-14 lg:top-8 max-w-none lg:max-w-[380px]"
       }
     >
       <div className="relative lg:bg-white lg:shadow-2xl lg:shadow-black/20 rounded-2xl p-5 md:p-6 space-y-4 lg:border lg:border-white/60">
