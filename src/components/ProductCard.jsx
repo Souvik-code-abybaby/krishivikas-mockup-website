@@ -58,7 +58,7 @@ export default function ProductCard({
             <span className="location">
               <Icon name="location" size={14} /> Punjab
             </span>
-            <button className="primary full" onClick={onOpen}>
+            <button className="primary full bg-linear-to-r from-[#13693a] via-[#8cbf44] to-[#13693a]" onClick={onOpen}>
               View Details
             </button>
           </>
