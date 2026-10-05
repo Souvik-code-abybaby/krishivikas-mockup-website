@@ -1,5 +1,5 @@
 
-export default function Icon({ name, size = 20 }) {
+export default function Icon({ name, size = 20,fill="none" }) {
   const paths = {
     menu: (
       <>
@@ -96,7 +96,7 @@ export default function Icon({ name, size = 20 }) {
       width={size}
       height={size}
       viewBox="0 0 24 24"
-      fill="none"
+      fill={fill}
       stroke="currentColor"
       strokeWidth="1.9"
       strokeLinecap="round"

@@ -18,7 +18,7 @@ export default function Filters() {
       </fieldset>
       <fieldset>
         <legend>
-          Brand <span>⌄</span>
+          Brand 
         </legend>
         {["John Deere", "Mahindra", "Swaraj", "New Holland", "Eicher"].map(
           (x) => (
@@ -27,7 +27,7 @@ export default function Filters() {
             </label>
           ),
         )}
-        <button>View More⌄</button>
+        <button>View More</button>
       </fieldset>
       <fieldset>
         <legend>Price Range</legend>
@@ -39,7 +39,7 @@ export default function Filters() {
       </fieldset>
       <fieldset>
         <legend>
-          Power (HP) <span>⌄</span>
+          Power (HP) 
         </legend>
         {["Below 20", "20 - 30", "31 - 50", "51 - 75", "Above 75"].map((x) => (
           <label key={x}>

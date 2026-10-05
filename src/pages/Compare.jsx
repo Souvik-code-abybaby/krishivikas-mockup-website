@@ -283,6 +283,9 @@ const removeItem = (i) => {
     setSelected((prev) => prev.slice(0, 1));
   }
 };
+// const removeItem = (i) => {
+//   setSelected((prev) => prev.map((s, idx) => (idx === i ? null : s)));
+// };
   // Change button on a panel
  const handleChange = (i) => {
   setEditIndex(selected[i] ? i : null);
@@ -312,7 +315,8 @@ const removeItem = (i) => {
   const firstItem = selected[0] ?? draft;
   const fm = firstItem?.model;
   const firstName = fm?.model_name ?? fm?.name ?? fm?.title;
-  const firstImg = fm?.model_image ?? fm?.image ?? fm?.logo;
+  const firstImg =
+  fm?.front_image ?? fm?.frontImage ?? fm?.model_image ?? fm?.image ?? fm?.logo;
 
   // remove the first card and start over
   const removeFirst = () => {
@@ -388,7 +392,8 @@ const removeItem = (i) => {
     const item = selected[i] ?? (i === selected.length ? draft : null);
     const m = item?.model;
     const name = m?.model_name ?? m?.name ?? m?.title;
-    const img = m?.model_image ?? m?.image ?? m?.logo;
+const img =
+  m?.front_image ?? m?.frontImage ?? m?.model_image ?? m?.image ?? m?.logo;
     const price =
       m?.price ?? m?.ex_showroom_price ?? m?.starting_price ?? null;
     const label = selected[0]?.category?.category_name ?? "Category";
@@ -397,7 +402,7 @@ const removeItem = (i) => {
     /* ---------- Empty card: "Add Tractor" ---------- */
     if (!item) {
       return (
-        <button
+        <button 
           key={i}
           type="button"
           onClick={() => handleChange(selected[0] ? 1 : 0)}
@@ -432,13 +437,13 @@ const removeItem = (i) => {
           ✕
         </button>
 
-        {img ? (
-          <img src={img} alt={name} className="h-44 w-full object-cover" />
-        ) : (
-          <div className="flex h-44 w-full items-center justify-center bg-gray-100 text-sm text-gray-400">
-            No image
-          </div>
-        )}
+   {img ? (
+  <img src={img} alt={name} className="h-44 w-full object-cover" />
+) : (
+  <div className="flex h-44 w-full items-center justify-center bg-gray-100 text-sm text-gray-400">
+    No image
+  </div>
+)}
 
         <div className="p-4">
           <h3 className="text-lg font-semibold text-[#3B5B9A]">{name}</h3>
@@ -659,7 +664,7 @@ const removeItem = (i) => {
                     </div>
                   </div>
                 ))}
-                <b className="bg-[#13693A]">VS</b>
+                <b className="bg-linear-to-r from-[#13693a] via-[#8cbf44] to-[#13693a]">VS</b>
               </div>
             </article>
           ))}

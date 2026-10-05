@@ -151,13 +151,15 @@ body {
   background: var(--canvas);
   line-height: 1.45;
 }
-button,
-input,
-select {
-  font: inherit;
-}
-button {
-  cursor: pointer;
+@layer base {
+  button,
+  input,
+  select {
+    font: inherit;
+  }
+  button {
+    cursor: pointer;
+  }
 }
 img {
   display: block;
@@ -575,7 +577,7 @@ section {
   padding: 7px;
   font-size: 12px;
 }
-.product-actions {
+/* .product-actions {
   display: grid;
   grid-template-columns: 1.35fr 1fr;
   gap: 6px;
@@ -584,7 +586,7 @@ section {
 .product-actions button {
   font-size: 11px;
   padding: 7px 5px;
-}
+} */
 .outline {
   border: 1px solid var(--green-800);
   border-radius: var(--radius-sm);
@@ -1009,13 +1011,14 @@ footer button:not(.brand) {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 12px;
 }
 .tabs {
   align-self: stretch;
   display: flex;
   gap: 40px;
 }
-.tabs button,
+
 .detail-tabs button {
   border: 0;
   background: transparent;
@@ -1025,6 +1028,16 @@ footer button:not(.brand) {
   font-weight: 700;
   position: relative;
 }
+.tabs button{
+   border: 0;
+  background: transparent;
+  color: var(--navy);
+  padding: 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  position: relative;
+}
+
 .tabs button.active,
 .detail-tabs button.active {
   color: var(--green-800);

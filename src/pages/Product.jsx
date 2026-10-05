@@ -18,8 +18,8 @@ export default function ProductPage({ setPage }) {
     redTractor,tractorField
   ];
   return (
-    <main className="container product-page">
-      <Breadcrumb items={["Home", "Tractors", "Eicher 380"]} />
+    <main className="container product-page mt-5">
+      {/* <Breadcrumb items={["Home", "Tractors", "Eicher 380"]} /> */}
       <section className="product-detail">
         <div className="gallery">
           <div className="gallery-main">
@@ -83,9 +83,7 @@ export default function ProductPage({ setPage }) {
           </dl>
           <div className="detail-actions">
             <button className="primary"> Contact Seller</button>
-            <button className="outline" onClick={()=>navigate("/compare")}>
-              ↻ Compare
-            </button>
+          
           </div>
         </div>
       </section>
