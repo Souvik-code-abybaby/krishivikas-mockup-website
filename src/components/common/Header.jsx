@@ -6,7 +6,7 @@ export default function Header({ page, setPage }) {
   const navigate = useNavigate();
   const [idx, setIdx] = useState(0);
   const [query, setQuery] = useState("");
-  const [activeNav, setActiveNav] = useState(null); // nothing selected by default
+  const [activeNav, setActiveNav] = useState("Home"); // nothing selected by default
   useEffect(() => {
     const t = setInterval(() => setIdx((i) => (i + 1) % words.length), 2500);
     return () => clearInterval(t);
@@ -23,6 +23,7 @@ export default function Header({ page, setPage }) {
     "Pesticides",
   ];
   const nav = [
+       { label: "Home"},
     { label: "Tractors", page: "tractors" },
     { label: "Commercial Vehicle" },
     { label: "Harvesters" },

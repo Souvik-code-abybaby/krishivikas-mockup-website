@@ -123,6 +123,7 @@ export default function HomePage({ setPage }) {
                 product={p}
                 compact
                 onOpen={() => setPage("product")}
+                onClick={()=>navigate("/category")}
               />
             ))}
           </div>
