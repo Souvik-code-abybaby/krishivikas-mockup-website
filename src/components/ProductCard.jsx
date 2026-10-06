@@ -41,7 +41,7 @@ console.log(categoryList)
           }}
           aria-label="Add to wishlist"
         >
-   <img src={categoryList[0]?.category_icon} alt="" className="p-1"/>
+   <img src={categoryList?.[0]?.category_icon} alt="" className="p-1"/>
         </button>
       </div>
       <div className="product-body">

@@ -2,7 +2,10 @@ import Icon from "../Icon";
 import logo from "../../assets/kv-logo.png";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Modal from "../Modal";
+import { Calculator } from "lucide-react";
 export default function Header({ page, setPage }) {
+  const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
   const [idx, setIdx] = useState(0);
   const [query, setQuery] = useState("");
@@ -23,20 +26,20 @@ export default function Header({ page, setPage }) {
     "Pesticides",
   ];
   const nav = [
-       { label: "Home"},
-    { label: "Tractors", page: "tractors" },
-    { label: "Commercial Vehicle" },
-    { label: "Harvesters" },
-    { label: "Implements" },
-    { label: "Tyres" },
-    { label: "Seeds" },
-    { label: "Fertilizers" },
-    { label: "Pesticides" },
-    { label: "More" },
+    { label: "Home", path: "/" },
+    { label: "Tractors", path: "/category", page: "tractors" },
+    { label: "Commercial Vehicle", path: "/category" },
+    { label: "Harvesters", path: "/category" },
+    { label: "Implements", path: "/category" },
+    { label: "Tyres", path: "/category" },
+    { label: "Seeds", path: "/category" },
+    { label: "Fertilizers", path: "/category" },
+    { label: "Pesticides", path: "/category" },
+    { label: "More", action: "more" },
   ];
   return (
     <header className="site-header bg-linear-to-r from-[#13693a] via-[#8cbf44] to-[#13693a]">
-      <div className="header-main">
+      <div className="header-main ">
         {/* <button className="icon-btn menu-btn" onClick={() => setOpen(!open)} aria-label="Toggle menu"><Icon name="menu" size={26} /></button> */}
         <img
           src={logo}
@@ -81,14 +84,16 @@ export default function Header({ page, setPage }) {
           <button onClick={() => navigate("/compare")}>
             <Icon name="scale" /> <span>Compare</span>
           </button>
-          <button onClick={() => navigate("/emi")}>
+          {/* <button onClick={() => navigate("/emi")}>
             <Icon name="calculator" /> <span>EMI Calculator</span>
-          </button>
+          </button> */}
           <button>
             <Icon name="heart" /> <span>Wishlist</span>
           </button>
-          <button onClick={() => navigate("/profile")}>
-            <Icon name="user" /> <span>English</span>
+       
+          <span>English</span>
+             <button onClick={() => navigate("/profile")}>
+            <Icon name="user" /> 
           </button>
         </div>
       </div>
@@ -98,14 +103,33 @@ export default function Header({ page, setPage }) {
             key={item.label}
             className={activeNav === item.label ? "active" : ""}
             onClick={() => {
+              if (item.action === "more") {
+                setShowMore(true); // open the modal, keep the current tab highlighted
+                return;
+              }
               setActiveNav(item.label);
-              navigate("/category");
+              navigate(item.path);
             }}
           >
             {item.label}
           </button>
         ))}
       </nav>
+      {/* <Modal open={showMore} onClose={() => setShowMore(false)} title="More">
+        <div className="flex flex-col gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              setShowMore(false); // close the modal first
+              navigate("/emi"); // then go to the EMI page
+            }}
+            className="w-full flex items-center gap-3 rounded-lg border border-gray-200 px-4 py-3 text-left text-sm md:text-base text-gray-700 transition hover:bg-[#13693a]/10 hover:border-[#13693a]"
+          >
+            <Calculator size={20} className="text-[#13693a] shrink-0" />
+            <span className="font-medium">EMI Calculator</span>
+          </button>
+        </div>
+      </Modal> */}
     </header>
   );
 }
