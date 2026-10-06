@@ -9,7 +9,7 @@ import ProfilePage from '../pages/Profile'
 import CategoryPage from '../pages/Category'
 import ProductPage from '../pages/Product'
 import AppDownloadPopup from '../components/common/AppDownloadPopup'
-
+// import Iffcopage from '../pages/IffcoPage'
 const AllRoutes = () => {
   return (
     <div>
@@ -19,7 +19,8 @@ const AllRoutes = () => {
       <Route path='/category' element={<><Header/><CategoryPage/><AppDownloadPopup/><Footer/></>}/>
           <Route path='/profile' element={<><Header/><ProfilePage/><AppDownloadPopup/>
           <Footer/></>}/>
-          <Route path='/product' element={<><Header/><ProductPage/><AppDownloadPopup/><Footer/></>}/></Routes>
+          <Route path='/product' element={<><Header/><ProductPage/><AppDownloadPopup/><Footer/></>}/>
+          {/* <Route path='/iffco' element={<><Header/><Iffcopage/><AppDownloadPopup/><Footer/></>}/> */}</Routes>
     </div>
   )
 }

@@ -1,4 +1,3 @@
-
 // import React, { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 //  import { useTranslation } from "react-i18next";
@@ -13,7 +12,6 @@
 //   ChevronDown,
 //   Search,
 // } from "lucide-react";
-
 
 // const CATEGORY_OPTIONS = [
 //   { id: 1, slug: "tractor", name: "Tractor", icon: Tractor },
@@ -89,7 +87,7 @@
 //     }
 //   };
 //   return (
-   
+
 //     <div
 //       className={
 //         variant === "static"
@@ -97,7 +95,7 @@
 //           : "category-search-form-wrapper relative lg:absolute z-30 w-[100%] mx-auto -mt-0 lg:mt-0 lg:w-auto lg:mx-0 lg:left-14 lg:top-8 max-w-none lg:max-w-[380px]"
 //       }
 //     >
-  
+
 //       <div className="relative lg:bg-white  lg:shadow-2xl lg:shadow-black/20 rounded-2xl p-5 md:p-6 space-y-4 lg:border  lg:border-white/60">
 //         <div className="flex items-center gap-2.5 pt-1">
 //           <span className="flex items-center justify-center w-9 h-9 rounded-full bg-[#13693a]/10 text-[#13693a] shrink-0">
@@ -116,7 +114,7 @@
 //           {/* Category select */}
 //           {lockCategory ? (
 //             <div className="w-full flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm md:text-base text-gray-600">
-           
+
 //               <span className="truncate">
 //                 {t(activeCategory?.name || selectedCategory)}
 //               </span>
@@ -150,7 +148,7 @@
 //           <div className="relative">
 //             <select
 //               value={selectedType}
-      
+
 //               onChange={handleTypeChange}
 //               disabled={!selectedCategory}
 //               className="w-full appearance-none rounded-lg border border-gray-300 bg-white pl-3 pr-9 py-2.5 text-sm md:text-base text-gray-700 outline-none transition-colors focus:border-[#13693a] focus:ring-2 focus:ring-[#13693a]/15 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-400"
@@ -191,6 +189,10 @@
 
 // export default CategorySearchForm;
 import React, { useState, useEffect } from "react";
+import CategoryDropdown, { OptionIcon } from "./CategoryDropdown";
+import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import { getCategoryList } from "../services/api/categoryApi";
 import {
   Tractor,
   Truck,
@@ -201,6 +203,7 @@ import {
   ChevronDown,
   Search,
 } from "lucide-react";
+
 
 const CATEGORY_OPTIONS = [
   { id: 1, slug: "tractor", name: "Tractor", icon: Tractor },
@@ -225,7 +228,14 @@ const TYRE_TYPE_OPTIONS = [
   { value: "new", label: "New" },
   { value: "old", label: "Used" },
 ];
-
+const ICON_MAP = {
+  tractor: Tractor,
+  "goods-vehicle": Truck,
+  "agri-inputs": Sprout,
+  harvester: Wheat,
+  implements: Wrench,
+  tyre: CircleDot,
+};
 const CategorySearchForm = ({
   lockCategory = false,
   presetCategory = "",
@@ -235,10 +245,32 @@ const CategorySearchForm = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState(presetCategory);
   const [selectedType, setSelectedType] = useState(presetType);
-
+  const DEFAULT_TOKEN = "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1"
+    const token = useSelector((state) => state.auth.token)? useSelector((state) => state.auth.token):DEFAULT_TOKEN;
   useEffect(() => setSelectedCategory(presetCategory), [presetCategory]);
   useEffect(() => setSelectedType(presetType), [presetType]);
+  const { data: categoryList } = useQuery({
+    queryKey: ["category-list", 1, token],
+    queryFn: () => getCategoryList(1, token),
+  });
 
+  // Handle both [..] and { data: [..] } response shapes
+  const rawList = Array.isArray(categoryList)
+    ? categoryList
+    : categoryList?.data || [];
+const iconSource = [...rawList.slice(0, 3), ...rawList.slice(5)];
+const categoryOptions = CATEGORY_OPTIONS.map((cat, i) => ({
+  ...cat,
+  iconUrl: iconSource[i]?.category_icon, // <-- change to your real field name
+}));
+
+
+  // Handle both [..] and { data: [..] } response shapes
+
+
+  const activeCategory = categoryOptions.find(
+    (c) => c.slug === selectedCategory,
+  );
   const isAgriInputs = selectedCategory === "agri-inputs";
   const isTyreInputs = selectedCategory === "tyre";
   const currentTypeOptions = isAgriInputs
@@ -247,8 +279,8 @@ const CategorySearchForm = ({
       ? TYRE_TYPE_OPTIONS
       : TYPE_OPTIONS;
 
-  const activeCategory = CATEGORY_OPTIONS.find((c) => c.slug === selectedCategory);
-  const CategoryIcon = activeCategory?.icon;
+  // const activeCategory = CATEGORY_OPTIONS.find((c) => c.slug === selectedCategory);
+  // const CategoryIcon = activeCategory?.iconUrl;
 
   const goToRoute = (category, type) => {
     if (!category || !type) return;
@@ -273,14 +305,14 @@ const CategorySearchForm = ({
       className={
         variant === "static"
           ? "category-search-form-wrapper relative z-30 w-full max-w-[420px] mx-auto"
-          : "category-search-form-wrapper relative lg:absolute z-30 w-[100%] mx-auto -mt-0 lg:mt-0 lg:w-auto lg:mx-0 lg:right-14 lg:top-8 max-w-none lg:max-w-[380px]"
+          : "category-search-form-wrapper relative lg:absolute z-30 w-full mx-auto -mt-0 lg:mt-0 lg:mx-0 lg:right-14 lg:top-8 lg:w-[380px]"
       }
     >
       <div className="relative lg:bg-white lg:shadow-2xl lg:shadow-black/20 rounded-2xl p-5 md:p-6 space-y-4 lg:border lg:border-white/60">
-        <div className="flex items-center gap-2.5 pt-1">
+        <div className="flex items-center gap-2 pt-1">
           <span className="flex items-center justify-center w-9 h-9 rounded-full bg-[#13693a]/10 text-[#13693a] shrink-0">
-            {CategoryIcon ? (
-              <CategoryIcon size={18} strokeWidth={2} />
+            {activeCategory ? (
+              <OptionIcon size={18} size={20}/>
             ) : (
               <Search size={16} strokeWidth={2} />
             )}
@@ -298,27 +330,15 @@ const CategorySearchForm = ({
               </span>
             </div>
           ) : (
-            <div className="relative">
-              <select
-                value={selectedCategory}
-                onChange={(e) => {
-                  setSelectedCategory(e.target.value);
-                  setSelectedType("");
-                }}
-                className="w-full appearance-none rounded-lg border border-gray-300 bg-white pl-3 pr-9 py-2.5 text-sm md:text-base text-gray-700 outline-none transition-colors focus:border-[#13693a] focus:ring-2 focus:ring-[#13693a]/15"
-              >
-                <option value="">Select Category</option>
-                {CATEGORY_OPTIONS.map((cat) => (
-                  <option key={cat.id} value={cat.slug}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown
-                size={16}
-                className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-              />
-            </div>
+            <CategoryDropdown
+              options={categoryOptions}
+              value={selectedCategory}
+              placeholder="Select Category"
+              onChange={(slug) => {
+                setSelectedCategory(slug);
+                setSelectedType("");
+              }}
+            />
           )}
 
           <div className="relative">

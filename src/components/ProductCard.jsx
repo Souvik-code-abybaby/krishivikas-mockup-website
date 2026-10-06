@@ -3,6 +3,9 @@ import Rating from "./Rating";
 const A = `../assets/`;
 import Icon from "./Icon";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getCategoryList } from "../services/api/categoryApi";
+import { useSelector } from "react-redux";
 export default function ProductCard({
   product,
   boosted,
@@ -10,8 +13,18 @@ export default function ProductCard({
   onOpen,
   onClick,
 }) {
+    const DEFAULT_TOKEN =
+    "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1";
+  const token = useSelector((state) => state.auth.token)
+    ? useSelector((state) => state.auth.token)
+    : DEFAULT_TOKEN;
+   const { data: categoryList } = useQuery({
+      queryKey: ["category-list", 1, token],
+      queryFn: () => getCategoryList(1, token),
+    });
   const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
+console.log(categoryList)
   return (
     <article
       className={`product-card ${compact ? "compact" : ""} cursor-pointer hover:scale-102`}
@@ -28,7 +41,7 @@ export default function ProductCard({
           }}
           aria-label="Add to wishlist"
         >
-          <Icon name="heart" size={18} fill={liked ? "currentColor" : "none"} />
+   <img src={categoryList[0]?.category_icon} alt="" className="p-1"/>
         </button>
       </div>
       <div className="product-body">

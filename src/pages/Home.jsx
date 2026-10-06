@@ -18,12 +18,16 @@ import cropSeedling from "../assets/crop-seedling.jpg";
 import sprayerField from "../assets/sprayer-field.jpg";
 import farmerRice from "../assets/farmer-rice.jpg";
 import FaqSection from "../components/faqSection";
+import IffcoBanner from "../components/IffcoBanner";
 export default function HomePage({ setPage }) {
-  const navigate=useNavigate();
-  const DEFAULT_TOKEN = "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1"
-    const token = useSelector((state) => state.auth.token)? useSelector((state) => state.auth.token):DEFAULT_TOKEN;
+  const navigate = useNavigate();
+  const DEFAULT_TOKEN =
+    "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1";
+  const token = useSelector((state) => state.auth.token)
+    ? useSelector((state) => state.auth.token)
+    : DEFAULT_TOKEN;
   const categoryIcons = ["◉", "▰", "❧", "⌇", "▱", "⌁", "◍"];
-    const {
+  const {
     data: categoryList,
     isLoading,
     isError,
@@ -56,10 +60,9 @@ export default function HomePage({ setPage }) {
     "What is the return and refund policy?",
     "Do you provide EMI on tractors and vehicles?",
     "How do I become a seller on Krishi Vikas?",
-
   ];
   const categories = categoryList ?? [];
-  console.log(categories)
+  console.log(categories);
   return (
     <>
       <main className="container home-page">
@@ -91,43 +94,61 @@ export default function HomePage({ setPage }) {
           <CategorySearchForm />
         </div>
 
-    <section>
-  <SectionTitle title="Categories" />
-  <div className="category-grid">
-    {isLoading && <p>Loading categories...</p>}
-    {isError && <p>Could not load categories.</p>}
-
-    {categories.map((c) => (
-      <button
-        className="category-card"
-        key={c.category_id}
-        onClick={() => navigate("/category")}
-      >
-        <img
-          src={c.category_icon}
-          alt={c.category_name}
-          className="category-img"
-          loading="lazy"
-        />
-        <strong>{c.category_name}</strong>
-      </button>
-    ))}
-  </div>
-</section>
         <section>
-          <SectionTitle title="Our Recommendations" />
-          <div className="product-strip">
-            {products.slice(0, 5).map((p) => (
-              <ProductCard
-                key={p.name}
-                product={p}
-                compact
-                onOpen={() => setPage("product")}
-                onClick={()=>navigate("/category")}
-              />
+          <SectionTitle title="Categories" />
+          <div className="category-grid">
+            {isLoading && <p>Loading categories...</p>}
+            {isError && <p>Could not load categories.</p>}
+
+            {categories.map((c) => (
+              <button
+                className="category-card"
+                key={c.category_id}
+                onClick={() => navigate("/category")}
+              >
+                <img
+                  src={c.category_icon}
+                  alt={c.category_name}
+                  className="category-img"
+                  loading="lazy"
+                />
+                <strong>{c.category_name}</strong>
+              </button>
             ))}
           </div>
         </section>
+        <section> <SectionTitle title="Nearby Digital Ducans" className="mt-4" />
+          <div className="seller-grid">
+            {[
+              "Sharma Agro Traders",
+              "Green Farm Solutions",
+              "Singh Tractors",
+              "Kisan Seva Kendra",
+            ].map((name, i) => (
+              <article className="seller-card" key={name}>
+                <div className="avatar">{name[0]}</div>
+                <div>
+                  <h3>
+                    {name} <span>✓</span>
+                  </h3>
+                  <p>
+                    {
+                      [
+                        "Jaipur, Rajasthan",
+                        "Indore, Madhya Pradesh",
+                        "Lucknow, Uttar Pradesh",
+                        "Patna, Bihar",
+                      ][i]
+                    }
+                  </p>
+                  <Rating value={`4.${7 - i}`} />
+                  <small>{56 - i * 6} products</small>
+                </div>
+                <button className="primary full">View Profile</button>
+              </article>
+            ))}
+          </div></section>
+    
 
         <section className="compare-promo">
           <div>
@@ -161,7 +182,7 @@ export default function HomePage({ setPage }) {
 
         <section>
           {/* <SectionTitle icon="star" title="Best Deals" /> */}
-           <SectionTitle  title="Best Deals" />
+          <SectionTitle title="Best Deals" />
           <div className="product-strip">
             {products.slice(0, 5).map((p) => (
               <ProductCard
@@ -173,27 +194,24 @@ export default function HomePage({ setPage }) {
             ))}
           </div>
         </section>
-
-        <section>
-          {/* <SectionTitle icon="play" title="Watch & Learn (YT Reels)" /> */}
-          <SectionTitle  title="Watch & Learn (YT Reels)" />
-          <div className="reels">
-            {reels.map(([image, title, time, views]) => (
-              <article className="reel" key={title}>
-                <img src={image} alt="" />
-                <div className="reel-shade"></div>
-                <button aria-label={`Play ${title}`}>
-                  <Icon name="play" size={38} />
-                </button>
-                <span className="duration">{time}</span>
-                <div>
-                  <h3>{title}</h3>
-                  <small>● {views} views</small>
-                </div>
-              </article>
+        <IffcoBanner/>
+    <section>
+          {/* <SectionTitle icon="user" title="Discoveries For You" /> */}
+          
+          <SectionTitle title="Our Recommendations" />
+          <div className="product-strip">
+            {products.slice(0, 5).map((p) => (
+              <ProductCard
+                key={p.name}
+                product={p}
+                compact
+                onOpen={() => setPage("product")}
+                onClick={() => navigate("/category")}
+              />
             ))}
           </div>
         </section>
+     
 
         <section className="seasonal">
           <div>
@@ -218,36 +236,22 @@ export default function HomePage({ setPage }) {
           <button onClick={() => setPage("tractors")}>Shop Now →</button>
         </section>
 
-        <section>
-          {/* <SectionTitle icon="user" title="Discoveries For You" /> */}
-          <SectionTitle  title="Discoveries For You" />
-          <div className="seller-grid">
-            {[
-              "Sharma Agro Traders",
-              "Green Farm Solutions",
-              "Singh Tractors",
-              "Kisan Seva Kendra",
-            ].map((name, i) => (
-              <article className="seller-card" key={name}>
-                <div className="avatar">{name[0]}</div>
+       <section>
+          {/* <SectionTitle icon="play" title="Watch & Learn (YT Reels)" /> */}
+          <SectionTitle title="Watch & Learn" />
+          <div className="reels">
+            {reels.map(([image, title, time, views]) => (
+              <article className="reel" key={title}>
+                <img src={image} alt="" />
+                <div className="reel-shade"></div>
+                <button aria-label={`Play ${title}`}>
+                  <Icon name="play" size={38} />
+                </button>
+                <span className="duration">{time}</span>
                 <div>
-                  <h3>
-                    {name} <span>✓</span>
-                  </h3>
-                  <p>
-                    {
-                      [
-                        "Jaipur, Rajasthan",
-                        "Indore, Madhya Pradesh",
-                        "Lucknow, Uttar Pradesh",
-                        "Patna, Bihar",
-                      ][i]
-                    }
-                  </p>
-                  <Rating value={`4.${7 - i}`} />
-                  <small>{56 - i * 6} products</small>
+                  <h3>{title}</h3>
+                  <small>● {views} views</small>
                 </div>
-                <button className="primary full">View Profile</button>
               </article>
             ))}
           </div>
@@ -256,7 +260,7 @@ export default function HomePage({ setPage }) {
         <slide>
           {/* <SectionTitle title="Frequently Asked Questions" /> */}
           {/* <div className="faq-grid"> */}
-            {/* {faqs.map((q, i) => (
+          {/* {faqs.map((q, i) => (
               <button
                 className={`faq ${faq === i ? "open" : ""}`}
                 key={q}
@@ -273,13 +277,10 @@ export default function HomePage({ setPage }) {
        
               </button>
             ))} */}
-            <FaqSection/>
+          <FaqSection />
           {/* </div> */}
         </slide>
-
-      
       </main>
-
     </>
   );
 }
