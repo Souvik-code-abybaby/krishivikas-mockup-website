@@ -35,4 +35,12 @@ export const dealers = [
     phone: "9999999994",
     image: farmerRice,
   },
+    {
+    name: "Kisan Seva Kendra",
+    city: "Patna, Bihar",
+    rating: "4.4",
+    products: 38,
+    phone: "9999999994",
+    image: farmerRice,
+  },
 ];

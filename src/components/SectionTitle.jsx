@@ -20,7 +20,7 @@ export default function SectionTitle({ icon, title, action = "View All →",onCl
         {icon && <Icon name={icon} />}
         {title}
       </h2>
-      {title!=="Categories" &&   title!=="Discoveries For You" && <button onClick={handleClick}>{action}</button> }
+      {title!=="Categories" &&   title!=="Discoveries For You" && title!=="Nearby Digital Ducans" &&  <button onClick={handleClick}>{action}</button> }
       
       
     </div>

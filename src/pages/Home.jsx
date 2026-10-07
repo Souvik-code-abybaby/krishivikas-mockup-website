@@ -20,7 +20,12 @@ import farmerRice from "../assets/farmer-rice.jpg";
 import FaqSection from "../components/faqSection";
 import IffcoBanner from "../components/IffcoBanner";
 import { dealers } from "../assets/data/dealers";
+import { useEffect } from "react";
+import { dealerSlug } from "./Dealer";
 export default function HomePage({ setPage }) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const navigate = useNavigate();
   const DEFAULT_TOKEN =
     "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1";
@@ -119,11 +124,12 @@ export default function HomePage({ setPage }) {
           </div>
         </section>
         <section> <SectionTitle title="Nearby Digital Ducans" className="mt-4" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mt-5">
   {dealers.map((d) => (
     <article
       key={d.name}
       className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-2xl cursor-pointer"
+     onClick={() => navigate(`/dealer/${dealerSlug(d)}`)}
     >
       {/* Picture */}
       <img

@@ -63,7 +63,7 @@
 //     </main>
 //   );
 // }
-import { useState, useMemo } from "react";
+import { useState, useMemo,useEffect } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumb";
 import InnerHero from "../components/InnerHero";
@@ -92,6 +92,9 @@ const staticBanners = [
 ];
 
 export default function CategoryPage({ setPage }) {
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   const [filters, setFilters] = useState(false);
   const [tab, setTab] = useState("New");
 const navigate=useNavigate();

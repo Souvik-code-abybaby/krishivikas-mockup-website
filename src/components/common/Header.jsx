@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Modal from "../Modal";
 import { Calculator } from "lucide-react";
+import { useLocation } from "react-router-dom";
 export default function Header({ page, setPage }) {
   const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [idx, setIdx] = useState(0);
   const [query, setQuery] = useState("");
   const [activeNav, setActiveNav] = useState("Home"); // nothing selected by default
@@ -14,6 +16,17 @@ export default function Header({ page, setPage }) {
     const t = setInterval(() => setIdx((i) => (i + 1) % words.length), 2500);
     return () => clearInterval(t);
   }, []);
+  useEffect(() => {
+  if (pathname === "/") {
+    setActiveNav("Home");
+  } else if (pathname === "/category") {
+    // keep the clicked category tab; just make sure Home isn't highlighted
+    setActiveNav((prev) => (prev && prev !== "Home" ? prev : "Tractors"));
+  } else {
+    // FAQ page and any other page: no nav tab highlighted
+    setActiveNav(null);
+  }
+}, [pathname]); 
   const [open, setOpen] = useState(false);
   const words = [
     "Tractors",

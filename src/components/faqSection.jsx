@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import faqImage from "../../src/assets/faq.jpg";
+import SectionTitle from "./SectionTitle";
 import {
   Accordion,
   AccordionContent,
@@ -12,7 +12,6 @@ const HOME_FAQ_COUNT = 9; // how many to show on the home page (max 9)
 
 const FaqSection = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   const faqNumbers = Array.from({ length: HOME_FAQ_COUNT }, (_, i) => i + 1);
 
@@ -38,6 +37,11 @@ const FaqSection = () => {
         </div>
 
         <div className="faq_right">
+                 <SectionTitle
+            onClick="/frequentlyaskedquestions"
+            action={`${t("View All")} →`}
+            className="mt-5 justify-end"
+          />
           <Accordion type="single" collapsible className="w-full">
             {faqNumbers.map((n) => (
               <AccordionItem key={n} value={`item-${n}`}>
@@ -49,15 +53,7 @@ const FaqSection = () => {
             ))}
           </Accordion>
 
-          <div className="mt-5 flex justify-end">
-            <button
-              type="button"
-              onClick={() => navigate("/frequentlyaskedquestions")}
-              className="inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-[#13693a] via-[#8cbf44] to-[#13693a] px-5 py-2 text-sm font-semibold text-white shadow-md transition hover:opacity-90"
-            >
-              {t("View All")} →
-            </button>
-          </div>
+   
         </div>
       </div>
     </section>

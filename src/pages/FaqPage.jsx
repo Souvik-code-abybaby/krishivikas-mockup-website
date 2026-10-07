@@ -11,7 +11,9 @@ const FAQ_COUNT = 9;
 const FaqPage = () => {
   const { t } = useTranslation();
   const faqNumbers = Array.from({ length: FAQ_COUNT }, (_, i) => i + 1);
-useEffect(() => window.scrollTo(0, 0), []);
+useEffect(() => {
+  window.scrollTo(0, 0);
+}, []);
   return (
     <main className="container faq-page py-8">
       <h1 className="mb-6 text-2xl md:text-4xl font-bold text-[#13693a]">
