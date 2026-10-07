@@ -19,6 +19,7 @@ import sprayerField from "../assets/sprayer-field.jpg";
 import farmerRice from "../assets/farmer-rice.jpg";
 import FaqSection from "../components/faqSection";
 import IffcoBanner from "../components/IffcoBanner";
+import { dealers } from "../assets/data/dealers";
 export default function HomePage({ setPage }) {
   const navigate = useNavigate();
   const DEFAULT_TOKEN =
@@ -118,36 +119,42 @@ export default function HomePage({ setPage }) {
           </div>
         </section>
         <section> <SectionTitle title="Nearby Digital Ducans" className="mt-4" />
-          <div className="seller-grid">
-            {[
-              "Sharma Agro Traders",
-              "Green Farm Solutions",
-              "Singh Tractors",
-              "Kisan Seva Kendra",
-            ].map((name, i) => (
-              <article className="seller-card" key={name}>
-                <div className="avatar">{name[0]}</div>
-                <div>
-                  <h3>
-                    {name} <span>✓</span>
-                  </h3>
-                  <p>
-                    {
-                      [
-                        "Jaipur, Rajasthan",
-                        "Indore, Madhya Pradesh",
-                        "Lucknow, Uttar Pradesh",
-                        "Patna, Bihar",
-                      ][i]
-                    }
-                  </p>
-                  <Rating value={`4.${7 - i}`} />
-                  <small>{56 - i * 6} products</small>
-                </div>
-                <button className="primary full">View Profile</button>
-              </article>
-            ))}
-          </div></section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-5">
+  {dealers.map((d) => (
+    <article
+      key={d.name}
+      className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-2xl cursor-pointer"
+    >
+      {/* Picture */}
+      <img
+        src={d.image}
+        alt={d.name}
+        loading="lazy"
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+      />
+
+      {/* Dark fade so the info stays readable */}
+      <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/55 to-transparent to-55%" />
+
+      {/* Verified badge */}
+
+
+      {/* Floating info panel */}
+      <div className="absolute inset-x-3 bottom-2  z-10 rounded-xl  p-3.5 ">
+        <h3 className="mb-1 text-base font-semibold text-white">
+          {d.name}
+        </h3>
+        <p className="mb-2 text-[13px] text-gray-200">{d.city}</p>
+
+        {/* <div className="mb-2.5 flex items-center justify-between">
+          <Rating value={d.rating} />
+          <small className="text-gray-500">{d.products} products</small>
+        </div> */}
+
+      </div>
+    </article>
+  ))}
+</div></section>
     
 
         <section className="compare-promo">
@@ -238,7 +245,7 @@ export default function HomePage({ setPage }) {
 
        <section>
           {/* <SectionTitle icon="play" title="Watch & Learn (YT Reels)" /> */}
-          <SectionTitle title="Watch & Learn" />
+          <SectionTitle title="Watch & Learn" onClick="https://www.youtube.com/@JoinKrishiVikas"/>
           <div className="reels">
             {reels.map(([image, title, time, views]) => (
               <article className="reel" key={title}>
