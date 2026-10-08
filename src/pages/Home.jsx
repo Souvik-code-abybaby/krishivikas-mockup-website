@@ -131,7 +131,7 @@ export default function HomePage({ setPage }) {
       className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-2xl cursor-pointer"
      onClick={() => navigate(`/dealer/${dealerSlug(d)}`)}
     >
-      {/* Picture */}
+      {/* Picture */} 
       <img
         src={d.image}
         alt={d.name}
