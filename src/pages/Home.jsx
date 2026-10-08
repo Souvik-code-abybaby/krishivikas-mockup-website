@@ -22,7 +22,10 @@ import IffcoBanner from "../components/IffcoBanner";
 import { dealers } from "../assets/data/dealers";
 import { useEffect } from "react";
 import { dealerSlug } from "./Dealer";
+import AppSidebar from "../components/AppSidebar";
 export default function HomePage({ setPage }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
