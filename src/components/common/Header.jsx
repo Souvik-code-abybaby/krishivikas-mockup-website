@@ -275,13 +275,13 @@ export default function Header({ page, setPage }) {
 
           <Icon name="search" size={21} />
         </label>
-        <div className="header-actions">
+        {/* <div className="header-actions">
           <button onClick={() => navigate("/compare")}>
             <Icon name="scale" /> <span>Compare</span>
           </button>
-          {/* <button onClick={() => navigate("/emi")}>
+          <button onClick={() => navigate("/emi")}>
             <Icon name="calculator" /> <span>EMI Calculator</span>
-          </button> */}
+          </button>
           <button onClick={() => navigate("/wishlist")}>
             <Icon name="heart" /> <span>Wishlist</span>
           </button>
@@ -290,7 +290,7 @@ export default function Header({ page, setPage }) {
              <button onClick={() => navigate("/profile")}>
             <Icon name="user" /> 
           </button>
-        </div>
+        </div> */}
       </div>
       <nav className={`main-nav ${open ? "open" : ""}`}>
         {nav.map((item) => (
@@ -337,6 +337,7 @@ export default function Header({ page, setPage }) {
       onLogout={handleLogout}
       logoSrc={logo}
     />
+    
     </>
   );
 }

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   Calculator,
   CalendarDays,
-  ChevronDown,
   ChevronRight,
   Gavel,
   GitCompare,
@@ -16,12 +15,16 @@ import {
   Star,
   X,
 } from "lucide-react";
-
+import profilepic from "../../src/assets/profilepic.jpg"
+import kvLogo from "../../src/assets/kvlogowebp.webp";
 // Main items (always visible)
 const MAIN_ITEMS = [
   { key: "language", label: "Language", icon: Globe }, // expands a language list
   { key: "compare", label: "Compare", icon: GitCompare, to: "/compare" },
   { key: "wishlist", label: "Wishlist", icon: Heart, to: "/wishlist" },
+  { key: "about", label: "About Us", icon: Info, to: "/about-us" },
+  { key: "terms", label: "Terms of Use", icon: Gavel, to: "/terms" },
+  { key: "privacy", label: "Privacy Policy", icon: ShieldCheck, to: "/privacy-policy" },
 ];
 
 // Items shown after tapping "More"
@@ -29,9 +32,6 @@ const MORE_ITEMS = [
   { key: "crop", label: "Crop Calender", icon: CalendarDays, to: "/crop-calendar" },
   { key: "emi", label: "Emi Calculator", icon: Calculator, to: "/emi-calculator" },
   { key: "rating", label: "My Rating", icon: Star, to: "/my-rating" },
-  { key: "about", label: "About Us", icon: Info, to: "/about-us" },
-  { key: "terms", label: "Terms of Use", icon: Gavel, to: "/terms" },
-  { key: "privacy", label: "Privacy Policy", icon: ShieldCheck, to: "/privacy-policy" },
 ];
 
 const LANGUAGES = [
@@ -88,8 +88,8 @@ export default function AppSidebar({
       <div
         onClick={onClose}
         aria-hidden="true"
-        className={`fixed inset-0 z-[90] bg-black/40 backdrop-blur-[1px] transition-opacity duration-300 ${
-          open ? "opacity-100" : "pointer-events-none opacity-0"
+        className={`fixed inset-0 z-[90]  bg-black/40 backdrop-blur-[1px] transition-opacity duration-300 ${
+          open ? "opacity-100" : "pointer-events-none opacity-0 " 
         }`}
       />
 
@@ -99,7 +99,7 @@ export default function AppSidebar({
         aria-modal="true"
         aria-label="Menu"
         aria-hidden={!open}
-        className={`fixed inset-y-0 left-0 z-[100] flex w-[330px] max-w-[88vw] flex-col rounded-r-3xl bg-[#067038] text-white shadow-2xl transition-transform duration-300 ease-out ${
+        className={`fixed inset-y-0 left-0 z-[100] flex w-[330px] max-w-[88vw] flex-col rounded-r-3xl bg-gradient-to-br from-[#13693a] to-[#8cbf44] text-white shadow-2xl transition-transform duration-300 ease-out ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -129,14 +129,16 @@ export default function AppSidebar({
               <span className="grid size-full place-items-center overflow-hidden rounded-full bg-white">
                 {user?.avatar ? (
                   <img
-                    src={user.avatar}
+                    src={profilepic}
                     alt={user?.name ?? "Profile"}
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <span className="text-2xl font-bold text-[#067038]">
-                    {(user?.name ?? "G")[0].toUpperCase()}
-                  </span>
+                    <img
+                    src={profilepic}
+                    alt={user?.name ?? "Profile"}
+                    className="h-full w-full object-cover"
+                  />
                 )}
               </span>
             </span>
@@ -165,16 +167,10 @@ export default function AppSidebar({
                 <Row
                   icon={item.icon}
                   label={item.label}
-                  trailing={
-                    langOpen ? (
-                      <ChevronDown size={18} />
-                    ) : (
-                      <ChevronRight size={18} />
-                    )
-                  }
+                  trailing={<Chevron open={langOpen} />}
                   onClick={() => setLangOpen((v) => !v)}
                 />
-                {langOpen && (
+                <Collapse open={langOpen}>
                   <div className="mb-1 ml-12 flex flex-wrap gap-2 pb-2">
                     {LANGUAGES.map((l) => (
                       <button
@@ -191,7 +187,7 @@ export default function AppSidebar({
                       </button>
                     ))}
                   </div>
-                )}
+                </Collapse>
               </div>
             ) : (
               <Row
@@ -204,16 +200,14 @@ export default function AppSidebar({
           )}
 
           {/* More */}
-          <Row
+          {/* <Row
             icon={MoreHorizontal}
             label="More"
-            trailing={
-              moreOpen ? <ChevronDown size={18} /> : <ChevronRight size={18} />
-            }
+            trailing={<Chevron open={moreOpen} />}
             onClick={() => setMoreOpen((v) => !v)}
-          />
-          {moreOpen &&
-            MORE_ITEMS.map((item) => (
+          /> */}
+          {/* <Collapse open={moreOpen}>
+            {MORE_ITEMS.map((item) => (
               <Row
                 key={item.key}
                 icon={item.icon}
@@ -221,6 +215,7 @@ export default function AppSidebar({
                 onClick={() => go(item.to)}
               />
             ))}
+          </Collapse> */}
         </nav>
 
         <div className="mx-4 border-t border-white/15" />
@@ -245,7 +240,7 @@ export default function AppSidebar({
           <span className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-full bg-white ring-2 ring-white/30">
             {logoSrc ? (
               <img
-                src={logoSrc}
+                src={kvLogo}
                 alt="Krishi Vikas Udyog"
                 className="h-full w-full object-cover"
               />
@@ -280,5 +275,31 @@ function Row({ icon: Icon, label, onClick, trailing }) {
         {trailing ?? <ChevronRight size={18} />}
       </span>
     </button>
+  );
+}
+
+// Smooth expand / collapse (animates height via grid rows, plus a fade)
+function Collapse({ open, children }) {
+  return (
+    <div
+      aria-hidden={!open}
+      className={`grid transition-[grid-template-rows,opacity,visibility] duration-300 ease-out motion-reduce:transition-none ${
+        open
+          ? "visible grid-rows-[1fr] opacity-100"
+          : "invisible grid-rows-[0fr] opacity-0"
+      }`}
+    >
+      <div className="overflow-hidden">{children}</div>
+    </div>
+  );
+}
+
+// Chevron that rotates when its section opens
+function Chevron({ open }) {
+  return (
+    <ChevronRight
+      size={18}
+      className={`transition-transform duration-300 ${open ? "rotate-90" : ""}`}
+    />
   );
 }
