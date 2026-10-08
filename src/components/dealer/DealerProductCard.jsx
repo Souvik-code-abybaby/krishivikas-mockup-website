@@ -39,7 +39,7 @@ export default function DealerProductCard({
           {!Number.isNaN(price) && (
             <strong className="text-[13px]">₹ {p.price}</strong>
           )}
-          {p.location && (
+          <div className="flex  justify-between items-center">  {p.location && (
             <span className="location">
               <MapPin size={14} /> {p.location}
             </span>
@@ -48,7 +48,8 @@ export default function DealerProductCard({
             <span className="location">
               <Calendar size={14} /> {p.date}
             </span>
-          )}
+          )}</div>
+        
         </div>
       </article>
     );

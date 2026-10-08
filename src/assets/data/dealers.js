@@ -2,6 +2,7 @@ import farmerField from "../../assets/farmer-field.jpg";
 import redTractor from "../../assets/red-tractor.jpg";
 import sprayerField from "../../assets/sprayer-field.jpg";
 import farmerRice from "../../assets/farmer-rice.jpg";
+import dealerProfilePic from "../../../src/assets/profilepic.jpg"
 export const dealers = [
   {
     name: "Sharma Agro Traders",
@@ -10,6 +11,7 @@ export const dealers = [
     products: 56,
     phone: "9999999991",
     image: farmerField,
+    logo:dealerProfilePic
   },
   {
     name: "Green Farm Solutions",
@@ -18,6 +20,7 @@ export const dealers = [
     products: 50,
     phone: "9999999992",
     image: redTractor,
+    logo:dealerProfilePic
   },
   {
     name: "Singh Tractors",
@@ -26,6 +29,7 @@ export const dealers = [
     products: 44,
     phone: "9999999993",
     image: sprayerField,
+    logo:dealerProfilePic
   },
   {
     name: "Kisan Seva Kendra",
@@ -34,6 +38,7 @@ export const dealers = [
     products: 38,
     phone: "9999999994",
     image: farmerRice,
+    logo:dealerProfilePic
   },
     {
     name: "Kisan Seva Kendra",
@@ -42,5 +47,6 @@ export const dealers = [
     products: 38,
     phone: "9999999994",
     image: farmerRice,
+    logo:dealerProfilePic
   },
 ];

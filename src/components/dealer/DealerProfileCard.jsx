@@ -1,5 +1,6 @@
-import { AtSign, MapPin, Share2 } from "lucide-react";
+import { AtSign, MapPin, Share2, Store } from "lucide-react";
 import toast from "react-hot-toast";
+import profilePic from "../../assets/profilepic.jpg";
 // import Rating from "./Rating";
 
 // Uses the same `filters` / fieldset / legend markup as <Filters />,
@@ -25,24 +26,24 @@ export default function DealerProfileCard({ dealer, shareUrl, className = "" }) 
   };
 
   return (
-    <aside className={`  ${className}`}>
-      <div className="w-full flex justify-between items-center rounded-t-2xl bg-linear-to-bl from-[#13693a] via-[#8cbf44] to-[#13693a] p-2">
-        <h2 className="text-white">Seller Profile</h2>
+    <aside className={`relative bg-linear-to-bl from-[#13693a] via-[#8cbf44] to-[#13693a]  ${className} rounded-2xl `} >
+      {/* Heading */}
+
         <button
           type="button"
           onClick={handleShare}
           aria-label="Share dealer"
-          className="rounded-full  text-white transition hover:bg-white/40 p-1 "
+          className="absolute grid size-7 shrink-0 place-items-center rounded-full bg-white text-[#13693a] transition hover:bg-gray-200  top-2 right-2"
         >
           <Share2 size={18} />
         </button>
-      </div>
+   
 
-      <div className="flex flex-col items-center text-center ">
-        <div className="grid size-24 place-items-center overflow-hidden rounded-full border-4 border-white bg-white shadow-md ring-4 ring-[#8cbf44]/40">
+      <div className="flex flex-col items-center text-center justify-center px-3 pb-4 ">
+        <div className="grid size-24 place-items-center overflow-hidden rounded-full border-4 border-white bg-white shadow-md ring-4 ring-[#8cbf44]/40 mt-7">
           {dealer.logo ? (
             <img
-              src={dealer.logo}
+              src={profilePic}
               alt={`${dealer.name} logo`}
               className="h-full w-full object-cover"
             />
@@ -53,42 +54,42 @@ export default function DealerProfileCard({ dealer, shareUrl, className = "" }) 
           )}
         </div>
 
-        <h3 className="mt-3 text-lg font-bold text-gray-900">{dealer.name}</h3>
+        {/* Name, email and location on one line (wraps only if there isn't room) */}
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-0">
+          <h3 className="text-lg font-bold text-white">{dealer.name}</h3>
+
+          {dealer.email && (
+            <a
+              href={`mailto:${dealer.email}`}
+              className="flex items-center gap-1 break-all text-sm text-white hover:text-[#13693a]"
+            >
+              <AtSign size={16} className="shrink-0" />
+              {dealer.email}
+            </a>
+          )}
+
+          {address && (
+            <a
+              href={mapsHref}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1 text-sm text-white hover:text-[#13693a]"
+            >
+              <MapPin size={16} className="shrink-0" />
+              {address}
+            </a>
+          )}
+        </div>
+
         {dealer.rating && (
           <div className="mt-1">
             {/* <Rating value={dealer.rating} /> */}
           </div>
         )}
         {dealer.products != null && (
-          <span className="hp mt-1">{dealer.products} products</span>
+          <span className="text-sm  text-white">{dealer.products} products</span>
         )}
       </div>
-
-      {(dealer.email || address) && (
-        <fieldset>
-          
-          {dealer.email && (
-            <a
-              href={`mailto:${dealer.email}`}
-              className="mb-2 flex items-start gap-2 break-words text-sm text-gray-700 hover:text-[#13693a]"
-            >
-              <AtSign size={16} className="mt-0.5 shrink-0 text-[#13693a]" />
-              {dealer.email}
-            </a>
-          )}
-          {address && (
-            <a
-              href={mapsHref}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-start gap-2 break-words text-sm text-gray-700 hover:text-[#13693a]"
-            >
-              <MapPin size={16} className="mt-0.5 shrink-0 text-[#13693a]" />
-              {address}
-            </a>
-          )}
-        </fieldset>
-      )}
 
       {/* {dealer.email && (
         <a

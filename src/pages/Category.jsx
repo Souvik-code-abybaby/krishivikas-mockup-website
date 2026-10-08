@@ -131,7 +131,7 @@ const navigate=useNavigate();
   }, []); // add dependencies here if `products` becomes dynamic (e.g. filtered by tab)
 
   return (
-    <main className="container category-page">
+    <main className="container category-page mt-[14px]">
       {/* <Breadcrumb items={["Home", "Tractors"]} /> */}
       <InnerHero
         title="Tractors"
