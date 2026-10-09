@@ -110,7 +110,7 @@ code {
   background: var(--code-bg);
 } */
 @import "tailwindcss";
-
+@import "tw-animate-css";
 :root {
   --green-950: #004a32;
   --green-900: #00633f;
@@ -311,7 +311,7 @@ img {
 }
 .main-nav button.active {
   color: var(--green-900);
-  font-weight: 700;
+  /* font-weight: 700; */
 }
 .main-nav button.active::after {
   content: "";
@@ -355,7 +355,7 @@ img {
 }
 .eyebrow {
   display: inline-block;
-  background: var(--green-900);
+  background: linear-gradient(to top right, #13693a, #8cbf44,#13693a);
   color: white;
   border-radius: 16px;
   padding: 5px 14px;

@@ -13,28 +13,70 @@ export const dealerSlug = (d) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 
+// Category tabs shown on the dealer page
+const CATEGORY_TABS = [
+  { key: "tractors", label: "Tractors" },
+  { key: "commercial", label: "Commercial Vehicle" },
+  { key: "harvesters", label: "Harvesters" },
+  { key: "implements", label: "Implements" },
+  { key: "tyres", label: "Tyres" },
+];
+
+// Turns whatever the product stores ("Tractor", "tractors", "Commercial Vehicles",
+// "Tire"...) into one of the tab keys above.
+// Products with no category at all fall back to "tractors".
+const getCategoryKey = (product) => {
+  const raw = String(
+    product.category ??
+      product.categoryName ??
+      product.category_name ??
+      product.type ??
+      "",
+  ).toLowerCase();
+
+  if (!raw) return "tractors";
+  if (raw.includes("tractor")) return "tractors";
+  if (raw.includes("commercial") || raw.includes("truck")) return "commercial";
+  if (raw.includes("harvest")) return "harvesters";
+  if (raw.includes("implement")) return "implements";
+  if (raw.includes("tyre") || raw.includes("tire")) return "tyres";
+  return raw;
+};
+
 export default function DealerPage({ setPage }) {
   const { dealerId } = useParams();
   const navigate = useNavigate();
   const [filters, setFilters] = useState(false);
-  const [tab, setTab] = useState("New");
+  const [tab, setTab] = useState("tractors");
   const [sort, setSort] = useState("Popularity");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [dealerId]);
 
+  // Start from the first tab whenever a different dealer is opened
+  useEffect(() => {
+    setTab("tractors");
+  }, [dealerId]);
+
   const dealer = dealers.find((d) => dealerSlug(d) === dealerId);
 
   // Dealer's products (own productList, or the 5 samples)
-  const dealerProducts = useMemo(() => {
+  const allProducts = useMemo(() => {
     if (!dealer) return [];
-    const list = [...getDealerProducts(dealer)];
+    return [...getDealerProducts(dealer)];
+  }, [dealer]);
+
+  // Filter by active category tab, then sort
+  const dealerProducts = useMemo(() => {
+    const list = allProducts.filter((p) => getCategoryKey(p) === tab);
     if (sort === "Price: Low to High") {
       list.sort((a, b) => Number(a.price) - Number(b.price));
     }
     return list;
-  }, [dealer, sort]);
+  }, [allProducts, tab, sort]);
+
+  const activeLabel = CATEGORY_TABS.find((t) => t.key === tab)?.label;
 
   if (!dealer) {
     return (
@@ -84,15 +126,46 @@ export default function DealerPage({ setPage }) {
         </div>
 
         <div className="catalog">
-          <div className="product-grid">
-            {dealerProducts.map((item, i) => (
-              <DealerProductCard
-                key={item.id ?? item.name ?? i}
-                product={item}
-                onClick={() => navigate("")}
-              />
-            ))}
+          {/* Category tabs + sort (same classes as the category page) */}
+          <div className="catalog-tools">
+            <div className="tabs overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {CATEGORY_TABS.map((t) => (
+                <button
+                  key={t.key}
+                  type="button"
+                  className={tab === t.key ? "active" : ""}
+                  onClick={() => setTab(t.key)}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+            {/* <div className="sort">
+              <label>
+                Sort by:{" "}
+                <select value={sort} onChange={(e) => setSort(e.target.value)}>
+                  <option>Popularity</option>
+                  <option>Price: Low to High</option>
+                </select>
+              </label>
+            </div> */}
           </div>
+
+          {dealerProducts.length > 0 ? (
+            <div className="product-grid">
+              {dealerProducts.map((item, i) => (
+                <DealerProductCard
+                  key={item.id ?? item.name ?? i}
+                  product={item}
+                  onClick={() => navigate("")}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="flex min-h-[200px] items-center justify-center rounded-2xl border border-dashed border-gray-300 p-8 text-center text-gray-500">
+              This dealer has no {activeLabel?.toLowerCase()} listed yet.
+            </div>
+          )}
         </div>
       </div>
     </main>
