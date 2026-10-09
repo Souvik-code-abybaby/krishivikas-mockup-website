@@ -15,7 +15,7 @@ const TestimonialSlider = () => {
   const nextRef = useRef(null);
 
   return (
-    <div className="slider-container overflow-hidden relative lg:px-0 px-2">
+    <div className="slider-container overflow-hidden relative lg:px-0 ">
       {/* Custom Navigation Buttons */}
       <div
         ref={prevRef}

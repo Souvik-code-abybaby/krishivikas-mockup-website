@@ -130,22 +130,20 @@ export default function HomePage({ setPage }) {
           </div>
         </section>
         <section>
-              <section>
-          {/* <SectionTitle icon="star" title="Best Deals" /> */}
-          <SectionTitle title="Best Deals" />
-          <div className="product-strip">
-            {products.slice(0, 5).map((p) => (
-              <ProductCard
-                key={p.name}
-                product={p}
-                boosted
-                onOpen={() => setPage("product")}
-              />
-            ))}
-          </div>
-        </section>
-          {" "}
-         
+          <section>
+            {/* <SectionTitle icon="star" title="Best Deals" /> */}
+            <SectionTitle title="Best Deals" />
+            <div className="product-strip">
+              {products.slice(0, 5).map((p) => (
+                <ProductCard
+                  key={p.name}
+                  product={p}
+                  boosted
+                  onOpen={() => setPage("product")}
+                />
+              ))}
+            </div>
+          </section>{" "}
         </section>
 
         <section className="compare-promo">
@@ -181,14 +179,13 @@ export default function HomePage({ setPage }) {
         <section>
           {/* <SectionTitle icon="star" title="Best Deals" /> */}
           <SectionTitle title="Nearby Discoveries" className="mt-4" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mt-5">
+          <div className="mt-5 flex gap-5 scrollbar-none overflow-x-auto pb-3 sm:grid sm:grid-cols-2 sm:overflow-visible lg:grid-cols-5">
             {dealers.map((d) => (
               <article
                 key={d.name}
-                className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-2xl cursor-pointer"
+                className="group relative aspect-[3/4] w-[75%] shrink-0 cursor-pointer overflow-hidden rounded-2xl shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-2xl sm:w-auto sm:shrink"
                 onClick={() => navigate(`/dealer/${dealerSlug(d)}`)}
               >
-                {/* Picture */}
                 <img
                   src={d.image}
                   alt={d.name}
@@ -196,19 +193,13 @@ export default function HomePage({ setPage }) {
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
 
-                {/* Dark fade so the info stays readable */}
                 <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/55 to-transparent to-55%" />
 
-                {/* Verified badge */}
-
-                {/* Floating info panel */}
-                <div className="absolute inset-x-3 bottom-2  z-10 rounded-xl  p-3.5 ">
+                <div className="absolute inset-x-3 bottom-2 z-10 rounded-xl p-3.5">
                   <h3 className="mb-1 text-base font-semibold text-white">
                     {d.name}
                   </h3>
                   <p className="mb-2 text-[13px] text-gray-200">{d.city}</p>
-
-               
                 </div>
               </article>
             ))}

@@ -16,7 +16,7 @@ export default function SectionTitle({ icon, title, action = "View All →",onCl
   };
   return (
     <div className="section-title">
-      <h2>
+      <h2 className="">
         {icon && <Icon name={icon} />}
         {title}
       </h2>

@@ -11,7 +11,7 @@ const Testimonials = () => {
   return (
     // Already inside HomePage's <main className="container">, so no extra
     // container/padding wrapper here (it would shrink the section).
-    <section className="rounded-3xl    px-3 pb-5 sm:px-0">
+    <section className="rounded-3xl    pb-5 sm:px-0">
       
 
       <div className="faq_right relative">

@@ -404,7 +404,7 @@ img {
 }
 .dots {
   position: absolute;
-  right: 50%;
+  right: 45%;
   bottom: 18px;
   display: flex;
   gap: 6px;
@@ -438,6 +438,7 @@ section {
   gap: 8px;
   letter-spacing: -0.3px;
 }
+
 .section-title button {
   border: 0;
   background: transparent;
@@ -486,6 +487,7 @@ section {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 12px;
+  scrollbar-width: none;
 }
 .product-card {
   border: 1px solid var(--line);
@@ -1892,6 +1894,7 @@ footer button:not(.brand) {
     display: flex;
     overflow-x: auto;
     gap: 10px;
+    scrollbar-width: none;
   }
   .category-card {
     flex: 0 0 90px;
