@@ -155,7 +155,7 @@ export default function Header({ page, setPage }) {
             }}
           />
 
-          <label className="search flex w-full max-w-[800px] items-center gap-3.5 h-9 px-4 bg-[#f4f7f5] border border-[#dde7e0]  text-[#13693a] transition-[border-color,box-shadow,background-color] duration-200 focus-within:bg-white rounded-full focus-within:border-[#13693a] focus-within:ring-[3px] focus-within:ring-[#13693a]/15">
+          <label className="search flex w-full max-w-[600px] items-center gap-3.5 h-9 px-4 bg-[#f4f7f5] border border-[#dde7e0]  text-[#13693a] transition-[border-color,box-shadow,background-color] duration-200 focus-within:bg-white rounded-full focus-within:border-[#13693a] focus-within:ring-[3px] focus-within:ring-[#13693a]/15">
             <div className="relative flex-1">
               <input
                 value={query}

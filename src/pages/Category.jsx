@@ -148,7 +148,7 @@ const navigate=useNavigate();
         <div className="catalog">
           <div className="catalog-tools">
             <div className="tabs">
-              {["New", "Rent", "Used"].map((t) => (
+              {["New",  "Used","Rent"].map((t) => (
                 <button
                   className={tab === t ? "active" : ""}
                   onClick={() => setTab(t)}

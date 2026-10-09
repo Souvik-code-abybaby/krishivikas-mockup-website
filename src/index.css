@@ -2181,3 +2181,27 @@ footer button:not(.brand) {
     }
   }
 }
+.slider-container .swiper-pagination {
+  bottom: 0 !important;
+}
+
+.slider-container .swiper-pagination-bullet-active {
+  background: #8cbf44;
+}
+/* REACT-SLICK CUSTOM CSS (heroImage slider) */
+.slider-container .slick-list,
+.slider-container .slick-track {
+  display: flex !important;
+  margin: 0 auto;
+}
+
+.slider-container .slick-slide {
+  display: flex !important;
+  justify-content: center;
+}
+
+.slider-container .slick-slide > div {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

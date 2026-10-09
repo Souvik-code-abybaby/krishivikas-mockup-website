@@ -22,10 +22,12 @@ import IffcoBanner from "../components/IffcoBanner";
 import { dealers } from "../assets/data/dealers";
 import { useEffect } from "react";
 import { dealerSlug } from "./Dealer";
+import { Slide } from "react-awesome-reveal";
 import AppSidebar from "../components/AppSidebar";
+import Testimonials from "../components/testimonials/Testimonials";
 export default function HomePage({ setPage }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const [scrollDirection, setScrollDirection] = useState("down");
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -72,6 +74,7 @@ export default function HomePage({ setPage }) {
   ];
   const categories = categoryList ?? [];
   console.log(categories);
+  const getSlideDirection = () => (scrollDirection === "down" ? "up" : "down");
   return (
     <>
       <main className="container home-page">
@@ -126,45 +129,24 @@ export default function HomePage({ setPage }) {
             ))}
           </div>
         </section>
-        <section> <SectionTitle title="Nearby Digital Ducans" className="mt-4" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mt-5">
-  {dealers.map((d) => (
-    <article
-      key={d.name}
-      className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-2xl cursor-pointer"
-     onClick={() => navigate(`/dealer/${dealerSlug(d)}`)}
-    >
-      {/* Picture */} 
-      <img
-        src={d.image}
-        alt={d.name}
-        loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-      />
-
-      {/* Dark fade so the info stays readable */}
-      <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/55 to-transparent to-55%" />
-
-      {/* Verified badge */}
-
-
-      {/* Floating info panel */}
-      <div className="absolute inset-x-3 bottom-2  z-10 rounded-xl  p-3.5 ">
-        <h3 className="mb-1 text-base font-semibold text-white">
-          {d.name}
-        </h3>
-        <p className="mb-2 text-[13px] text-gray-200">{d.city}</p>
-
-        {/* <div className="mb-2.5 flex items-center justify-between">
-          <Rating value={d.rating} />
-          <small className="text-gray-500">{d.products} products</small>
-        </div> */}
-
-      </div>
-    </article>
-  ))}
-</div></section>
-    
+        <section>
+              <section>
+          {/* <SectionTitle icon="star" title="Best Deals" /> */}
+          <SectionTitle title="Best Deals" />
+          <div className="product-strip">
+            {products.slice(0, 5).map((p) => (
+              <ProductCard
+                key={p.name}
+                product={p}
+                boosted
+                onOpen={() => setPage("product")}
+              />
+            ))}
+          </div>
+        </section>
+          {" "}
+         
+        </section>
 
         <section className="compare-promo">
           <div>
@@ -198,22 +180,44 @@ export default function HomePage({ setPage }) {
 
         <section>
           {/* <SectionTitle icon="star" title="Best Deals" /> */}
-          <SectionTitle title="Best Deals" />
-          <div className="product-strip">
-            {products.slice(0, 5).map((p) => (
-              <ProductCard
-                key={p.name}
-                product={p}
-                boosted
-                onOpen={() => setPage("product")}
-              />
+          <SectionTitle title="Nearby Discoveries" className="mt-4" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mt-5">
+            {dealers.map((d) => (
+              <article
+                key={d.name}
+                className="group relative aspect-[3/4] overflow-hidden rounded-2xl shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-2xl cursor-pointer"
+                onClick={() => navigate(`/dealer/${dealerSlug(d)}`)}
+              >
+                {/* Picture */}
+                <img
+                  src={d.image}
+                  alt={d.name}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+
+                {/* Dark fade so the info stays readable */}
+                <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/55 to-transparent to-55%" />
+
+                {/* Verified badge */}
+
+                {/* Floating info panel */}
+                <div className="absolute inset-x-3 bottom-2  z-10 rounded-xl  p-3.5 ">
+                  <h3 className="mb-1 text-base font-semibold text-white">
+                    {d.name}
+                  </h3>
+                  <p className="mb-2 text-[13px] text-gray-200">{d.city}</p>
+
+               
+                </div>
+              </article>
             ))}
           </div>
         </section>
-        <IffcoBanner/>
-    <section>
+        <IffcoBanner />
+        <section>
           {/* <SectionTitle icon="user" title="Discoveries For You" /> */}
-          
+
           <SectionTitle title="Our Recommendations" />
           <div className="product-strip">
             {products.slice(0, 5).map((p) => (
@@ -227,7 +231,6 @@ export default function HomePage({ setPage }) {
             ))}
           </div>
         </section>
-     
 
         <section className="seasonal">
           <div>
@@ -252,25 +255,15 @@ export default function HomePage({ setPage }) {
           <button onClick={() => setPage("tractors")}>Shop Now →</button>
         </section>
 
-       <section>
+        <section>
           {/* <SectionTitle icon="play" title="Watch & Learn (YT Reels)" /> */}
-          <SectionTitle title="Watch & Learn" onClick="https://www.youtube.com/@JoinKrishiVikas"/>
-          <div className="reels">
-            {reels.map(([image, title, time, views]) => (
-              <article className="reel" key={title}>
-                <img src={image} alt="" />
-                <div className="reel-shade"></div>
-                <button aria-label={`Play ${title}`}>
-                  <Icon name="play" size={38} />
-                </button>
-                <span className="duration">{time}</span>
-                <div>
-                  <h3>{title}</h3>
-                  <small>● {views} views</small>
-                </div>
-              </article>
-            ))}
-          </div>
+          <SectionTitle
+            title="Watch & Learn"
+            onClick="https://www.youtube.com/@JoinKrishiVikas"
+          />
+          <Slide direction={getSlideDirection()} triggerOnce>
+            <Testimonials />
+          </Slide>
         </section>
 
         <slide>
