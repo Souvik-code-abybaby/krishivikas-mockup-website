@@ -1765,6 +1765,14 @@ footer button:not(.brand) {
   position: relative;
 }
 .nav-icon { display: none; }
+.filter-panel,
+.filter-panel-body {
+  display: contents; /* invisible wrappers on desktop */
+}
+.filter-close,
+.filter-apply {
+  display: none;
+}
 @media (max-width: 1000px) {
   .header-actions span {
     display: none;
@@ -2065,7 +2073,7 @@ body {
   .filter-wrap {
     display: none;
   }
-  .filter-wrap.visible {
+  /* .filter-wrap.visible {
     display: block;
     position: fixed;
     z-index: 80;
@@ -2077,7 +2085,72 @@ body {
   .filter-wrap.visible .filters {
     max-width: 330px;
     min-height: 100%;
-  }
+  } */
+   .filter-wrap.visible {
+  display: flex;
+  align-items: flex-start;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  padding: 12px;
+  background: rgba(0, 24, 15, 0.5);
+  overflow: hidden;
+}
+.filter-wrap.visible .filter-panel {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: min(340px, 100%);
+  max-height: 100%;
+  background: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+.filter-wrap.visible .filter-panel-body {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* old Edge */
+}
+.filter-wrap.visible .filter-panel-body::-webkit-scrollbar {
+  display: none;              /* Chrome, Safari, Android */
+}
+.filter-wrap.visible .filters {
+  max-width: none;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  padding-bottom: 0;
+}
+.filter-wrap.visible .filter-close {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--navy);
+  font-size: 14px;
+}
+.filter-wrap.visible .filter-apply {
+  display: block;
+  position: sticky;
+  bottom: 0;
+  margin: 12px -14px 0;
+  padding: 16px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  background: #fff;
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+}
   .catalog-tools {
     align-items: flex-end;
     height: 50px;
