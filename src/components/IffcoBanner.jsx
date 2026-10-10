@@ -10,7 +10,7 @@ const IffcoBanner = () => {
   return (
     <>
       <section className="iffco-banner">
-        <Link to={`${BASE_URL}/company/1`} onClick={() => { setCompanyLogo("https://krishivikas.com//storage/company/2023-09-07-12-53-496191WhatsApp%20Image%202023-09-05%20at%2012.47.58.jpg") }}>
+        <Link to={`${BASE_URL}/iffco`} onClick={() => { setCompanyLogo("https://krishivikas.com//storage/company/2023-09-07-12-53-496191WhatsApp%20Image%202023-09-05%20at%2012.47.58.jpg") }}>
           <img
             src={iffcoBanner}
             alt="this is iffco banner"

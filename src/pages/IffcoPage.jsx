@@ -4,9 +4,9 @@
 import { useQuery } from "@tanstack/react-query";
 import MobileScreenNav from "../components/header/MobileScreenNav";
 import { getCompanyDealers, getCompanyProduct } from "../services/api/companyApi";
-import iffcoLogo from "../assets/images/IFFCO-LOGO.jpg";
-import Preloader from "../components/elements/Preloader";
-import BreadCrumb from "../components/elements/BreadCrumb"; // Added dynamic breadcrumb
+import iffcoLogo from "../../src/assets/IFFCO-LOGO.jpg";
+import Preloader from "../../src/components/iffco/Preloader";
+// import BreadCrumb from "../components/elements/BreadCrumb"; // Added dynamic breadcrumb
 import { MdOutlineCurrencyRupee } from "react-icons/md";
 import {
   Drawer,
@@ -20,14 +20,19 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useParams } from "react-router-dom";
-import BASE_URL from "../../config";
+// import BASE_URL from "../../config";
 import { useContext, useEffect } from "react";
-import { CompanyDataContext } from "../context/CompanyData/CompanyDataContext";
+import { CompanyDataContext } from "../context/CompanyDataContext";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-
+import InnerHero from "../components/InnerHero";
 const Iffcopage = () => {
-  const token = useSelector((state) => state.auth.token);
+  const BASE_URL="";
+  const DEFAULT_TOKEN =
+    "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1";
+  const token = useSelector((state) => state.auth.token)
+    ? useSelector((state) => state.auth.token)
+    : DEFAULT_TOKEN;
   const navigate = useNavigate();
   const { companyId } = useParams();
 
@@ -60,8 +65,11 @@ const Iffcopage = () => {
     queryFn: () => getCompanyDealers(getDealerId(companyId), token),
   });
 
-  const { companyDealerData, setCompanyDealerData } = useContext(CompanyDataContext);
-  setCompanyDealerData(companyDealers);
+const { setCompanyDealerData } = useContext(CompanyDataContext);
+
+useEffect(() => {
+  if (companyDealers) setCompanyDealerData(companyDealers);
+}, [companyDealers]);
   // console.log(iffcoDealerData);
 
   // console.log(iffcoDealers);
@@ -73,12 +81,16 @@ const Iffcopage = () => {
       {/* <MobileScreenNav /> */}
       
       {/* Dynamic BreadCrumb Component - automatically shows video for non-category pages */}
-      <BreadCrumb 
+      {/* <BreadCrumb 
         pageTitle={t('Company Product')}
         customBreadcrumbs={['Company Product']}
-      />
-
+      /> */}
+ 
       <main className="iffco-product-page container my-5">
+        <InnerHero
+        title="Tractors"
+        text="Powerful, reliable and efficient tractors for every farming need."
+      />
         {iffcoProductLoading ? (
           <Preloader />
         ) : (
@@ -99,18 +111,18 @@ const Iffcopage = () => {
                       />
                       <div className="iffco-logo text-end px-5">
                         <img
-                          src={item.company_logo}
+                          src={iffcoLogo}
                           alt="this is iffco logo"
                           className="md:w-[80px] w-[60px] ms-auto rounded-lg"
                         />
                       </div>
-                      <p className="md:text-md mt-3 text-sm text-center bg-lightdark text-white px-4 py-4 iffco-product-title truncate">
+                      <p className="md:text-md mt-3 text-sm text-center bg-black/80 text-white px-4 py-4 iffco-product-title truncate">
                         {item.product_name}
                       </p>
                     </div>
                   </DrawerTrigger>
-                  <DrawerContent>
-                    <div className="container h-[400px] overflow-y-auto">
+                  <DrawerContent className="bg-white">
+                    <div className="container h-[400px] overflow-y-auto ">
                       <div className="grid lg:grid-cols-2 grid-cols-1">
                         <img
                           src={item.product_image}
@@ -135,7 +147,7 @@ const Iffcopage = () => {
 
                     <DrawerFooter className="text-center">
                       <Button 
-                        className="uppercase w-[300px] mx-auto bg-gradient-green" 
+                        className="uppercase w-[300px] mx-auto bg-gradient-green primary" 
                         onClick={() => { 
                           navigate(`${BASE_URL}/company-dealers/${getDealerId(companyId)}`) 
                         }}

@@ -1568,7 +1568,7 @@ footer button:not(.brand) {
   width: 100%;
   max-width: none;
   padding: 1px max(24px, calc((100vw - 1180px) / 2)) 32px;
-  margin: 0;
+
   background:
     linear-gradient(
       90deg,
@@ -1576,6 +1576,7 @@ footer button:not(.brand) {
       rgba(255, 249, 220, 0.35)
     ),
     url("../src/assets//tractor-field.jpg") center 55% / cover;
+    border-radius: 15px;
 }
 .compare-hero h1 {
   font-size: 42px;

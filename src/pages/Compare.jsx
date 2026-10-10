@@ -169,9 +169,9 @@ function CategorySelect({ options, value, onChange, disabled, className }) {
 export default function ComparePage() {
   const DEFAULT_TOKEN =
     "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1";
-        useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []); 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const token = useSelector((state) => state.auth.token)
     ? useSelector((state) => state.auth.token)
     : DEFAULT_TOKEN;
@@ -275,33 +275,33 @@ export default function ComparePage() {
     setDraft(null);
     resetPicker();
   };
-const removeItem = (i) => {
-  if (i === 0) {
-    // panel 2 depends on panel 1's category, so clear everything
-    setSelected([]);
-    setDraft(null);
-    setCategory("");
-    resetPicker();
-  } else {
-    setSelected((prev) => prev.slice(0, 1));
-  }
-};
-// const removeItem = (i) => {
-//   setSelected((prev) => prev.map((s, idx) => (idx === i ? null : s)));
-// };
+  const removeItem = (i) => {
+    if (i === 0) {
+      // panel 2 depends on panel 1's category, so clear everything
+      setSelected([]);
+      setDraft(null);
+      setCategory("");
+      resetPicker();
+    } else {
+      setSelected((prev) => prev.slice(0, 1));
+    }
+  };
+  // const removeItem = (i) => {
+  //   setSelected((prev) => prev.map((s, idx) => (idx === i ? null : s)));
+  // };
   // Change button on a panel
- const handleChange = (i) => {
-  setEditIndex(selected[i] ? i : null);
-  resetPicker();
+  const handleChange = (i) => {
+    setEditIndex(selected[i] ? i : null);
+    resetPicker();
 
-  if (i === 1 && selected[0]) {
-    // panel 2: reuse the category from panel 1
-    setCategory(selected[0].category?.category_id);
-  } else {
-    setCategory("");
-  }
-  setOpen(true);
-};
+    if (i === 1 && selected[0]) {
+      // panel 2: reuse the category from panel 1
+      setCategory(selected[0].category?.category_id);
+    } else {
+      setCategory("");
+    }
+    setOpen(true);
+  };
 
   const isComplete =
     selected.length === 2 &&
@@ -319,7 +319,11 @@ const removeItem = (i) => {
   const fm = firstItem?.model;
   const firstName = fm?.model_name ?? fm?.name ?? fm?.title;
   const firstImg =
-  fm?.front_image ?? fm?.frontImage ?? fm?.model_image ?? fm?.image ?? fm?.logo;
+    fm?.front_image ??
+    fm?.frontImage ??
+    fm?.model_image ??
+    fm?.image ??
+    fm?.logo;
 
   // remove the first card and start over
   const removeFirst = () => {
@@ -333,9 +337,9 @@ const removeItem = (i) => {
     "w-full border border-gray-300 rounded-md h-10 px-3 mt-1 bg-white disabled:bg-gray-100";
   console.log("brandList:", brandList);
   return (
-    <main className="compare-page">
+    <main className="container compare-page mt-[14px]">
       <section className="compare-hero container">
-        <Breadcrumb items={["Home", "Compare Categories"]} />
+        {/* <Breadcrumb items={["Home", "Compare Categories"]} /> */}
         <h1>Compare Categories</h1>
         <p>
           Compare specifications, features and prices
@@ -343,7 +347,6 @@ const removeItem = (i) => {
           to choose the best category for your needs.
         </p>
       </section>
-      
 
       {/* Selected info (two panels) */}
       {/* <section className="compare-selector container">
@@ -389,94 +392,106 @@ const removeItem = (i) => {
         })}
         <span className="vs">VS</span>
       </section> */}
-<section className="container relative mx-auto flex  gap-6 justify-center py-4">
-  {[0, 1].map((i) => {
-    // saved item, or the draft in the first empty slot
-    const item = selected[i] ?? (i === selected.length ? draft : null);
-    const m = item?.model;
-    const name = m?.model_name ?? m?.name ?? m?.title;
-const img =
-  m?.front_image ?? m?.frontImage ?? m?.model_image ?? m?.image ?? m?.logo;
-    const price =
-      m?.price ?? m?.ex_showroom_price ?? m?.starting_price ?? null;
-    const label = selected[0]?.category?.category_name ?? "Category";
-    const catIcon = selected[0]?.category?.category_icon;
+      <section className="container relative mx-auto flex sm:flex-row flex-col  gap-6 justify-center py-4 ">
+        {[0, 1].map((i) => {
+          // saved item, or the draft in the first empty slot
+          const item = selected[i] ?? (i === selected.length ? draft : null);
+          const m = item?.model;
+          const name = m?.model_name ?? m?.name ?? m?.title;
+          const img =
+            m?.front_image ??
+            m?.frontImage ??
+            m?.model_image ??
+            m?.image ??
+            m?.logo;
+          const price =
+            m?.price ?? m?.ex_showroom_price ?? m?.starting_price ?? null;
+          const label = selected[0]?.category?.category_name ?? "Category";
+          const catIcon = selected[0]?.category?.category_icon;
 
-    /* ---------- Empty card: "Add Tractor" ---------- */
-    if (!item) {
-      return (
-        <button 
-          key={i}
-          type="button"
-          onClick={() => handleChange(selected[0] ? 1 : 0)}
-          className="flex h-60 w-80 flex-col items-center justify-center gap-4 rounded-xl border border-slate-400 bg-[#F7FAFD] hover:border-[#13693A]"
-        >
-          <span className="flex h-24 w-24 items-center justify-center rounded-2xl border border-dashed border-slate-400 bg-white">
-            {catIcon ? (
-              <img src={catIcon} alt="" className="h-12 w-12 object-contain" />
-            ) : (
-              <span className="text-4xl text-slate-400">+</span>
-            )}
-          </span>
-          <span className="text-base font-medium text-slate-800 underline underline-offset-4">
-            Add {label}
-          </span>
-        </button>
-      );
-    }
+          /* ---------- Empty card: "Add Tractor" ---------- */
+          if (!item) {
+            return (
+              <button
+                key={i}
+                type="button"
+                onClick={() => handleChange(selected[0] ? 1 : 0)}
+                className="flex h-60 w-80 flex-col items-center justify-center gap-4 rounded-xl border border-slate-400 bg-[#F7FAFD] hover:border-[#13693A]"
+              >
+                <span className="flex h-24 w-24 items-center justify-center rounded-2xl border border-dashed border-slate-400 bg-white">
+                  {catIcon ? (
+                    <img
+                      src={catIcon}
+                      alt=""
+                      className="h-12 w-12 object-contain"
+                    />
+                  ) : (
+                    <span className="text-4xl text-slate-400">+</span>
+                  )}
+                </span>
+                <span className="text-base font-medium text-slate-800 underline underline-offset-4">
+                  Add {label}
+                </span>
+              </button>
+            );
+          }
 
-    /* ---------- Filled card ---------- */
-    return (
-      <article
-        key={i}
-        className="relative overflow-hidden rounded-xl bg-white shadow-md w-80"
-      >
-        <button
-          type="button"
-          onClick={() => removeItem(i)}
-          aria-label="Remove"
-          className="absolute right-2 top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs shadow hover:text-red-600"
-        >
-          ✕
-        </button>
+          /* ---------- Filled card ---------- */
+          return (
+            <article
+              key={i}
+              className="relative overflow-hidden rounded-xl bg-white shadow-md w-80"
+            >
+              <button
+                type="button"
+                onClick={() => removeItem(i)}
+                aria-label="Remove"
+                className="absolute right-2 top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs shadow hover:text-red-600"
+              >
+                ✕
+              </button>
 
-   {img ? (
-  <img src={img} alt={name} className="h-44 w-full object-cover" />
-) : (
-  <div className="flex h-44 w-full items-center justify-center bg-gray-100 text-sm text-gray-400">
-    No image
-  </div>
-)}
+              {img ? (
+                <img
+                  src={img}
+                  alt={name}
+                  className="h-44 w-full object-cover"
+                />
+              ) : (
+                <div className="flex h-44 w-full items-center justify-center bg-gray-100 text-sm text-gray-400">
+                  No image
+                </div>
+              )}
 
-        <div className="p-4">
-          <h3 className="text-lg font-semibold text-[#3B5B9A]">{name}</h3>
-          <p className="mt-1 text-sm text-gray-500">
-            {item.brand?.brand_name} • {item.category?.category_name}
-          </p>
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-[#3B5B9A]">{name}</h3>
+                <p className="mt-1 text-sm text-gray-500">
+                  {item.brand?.brand_name} • {item.category?.category_name}
+                </p>
 
-          {/* {price && (
+                {/* {price && (
             <>
               <p className="mt-3 text-sm text-gray-500">Ex-Showroom Price</p>
               <p className="font-semibold text-gray-900">₹ {price}</p>
             </>
           )} */}
 
-          <button
-            type="button"
-            onClick={() => handleChange(i)}
-            className="mt-4 w-full rounded-lg bg-[#13693A] py-3 font-bold text-white hover:opacity-90"
-          >
-            Change
-          </button>
-        </div>
-      </article>
-    );
-  })}
+                <button
+                  type="button"
+                  onClick={() => handleChange(i)}
+                  className="mt-4 w-full rounded-lg bg-[#13693A] py-3 font-bold text-white hover:opacity-90"
+                >
+                  Change
+                </button>
+              </div>
+            </article>
+          );
+        })}
 
-  {/* <span className="absolute left-1/2 top-1/2 z-10 hidden h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#13693A] text-sm font-bold text-white md:flex">
+        {/* <span className="absolute left-1/2 top-1/2 z-10 hidden h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#13693A] text-sm font-bold text-white md:flex">
     VS
   </span> */}
-</section>
+      </section>
       {/* Submit only appears when everything is filled */}
       {isComplete && (
         <div className="container flex justify-center mt-6">
@@ -512,31 +527,31 @@ const img =
                     : "Choose Category"}
             </h2>
             {firstItem && editIndex === null && (
-        <div className="relative mb-4 flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-2 pr-8">
-          {firstImg && (
-            <img
-              src={firstImg}
-              alt={firstName}
-              className="h-12 w-12 shrink-0 rounded object-contain"
-            />
-          )}
-          <div className="min-w-0">
-            <p className="truncate text-sm font-semibold">{firstName}</p>
-            <p className="truncate text-xs text-gray-500">
-              {firstItem.brand?.brand_name} •{" "}
-              {firstItem.category?.category_name}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={removeFirst}
-            aria-label="Remove first item"
-            className="absolute right-1 top-1 rounded px-1.5 text-xs text-gray-500 hover:bg-gray-200 hover:text-red-600"
-          >
-            ✕
-          </button>
-        </div>
-      )}
+              <div className="relative mb-4 flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-2 pr-8">
+                {firstImg && (
+                  <img
+                    src={firstImg}
+                    alt={firstName}
+                    className="h-12 w-12 shrink-0 rounded object-contain"
+                  />
+                )}
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold">{firstName}</p>
+                  <p className="truncate text-xs text-gray-500">
+                    {firstItem.brand?.brand_name} •{" "}
+                    {firstItem.category?.category_name}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={removeFirst}
+                  aria-label="Remove first item"
+                  className="absolute right-1 top-1 rounded px-1.5 text-xs text-gray-500 hover:bg-gray-200 hover:text-red-600"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
             <p className="text-sm text-gray-500 mb-4">
               {selected.length === 0
                 ? "Select the first item to compare."
@@ -576,12 +591,12 @@ const img =
                 />
               </div>
             )}
-{category && !brand && editIndex === 1 && (
-  <p className="text-xs text-gray-500 mb-2">
-    Showing brands for {selected[0]?.category?.category_name}. To use a
-    different category, change Category 1.
-  </p>
-)}
+            {category && !brand && editIndex === 1 && (
+              <p className="text-xs text-gray-500 mb-2">
+                Showing brands for {selected[0]?.category?.category_name}. To
+                use a different category, change Category 1.
+              </p>
+            )}
             {/* Brand: visible only after a category is selected */}
             {/* Brand: visible after a category is selected, hidden once a brand is picked */}
             {category && !brand && (
@@ -667,7 +682,9 @@ const img =
                     </div>
                   </div>
                 ))}
-                <b className="bg-linear-to-r from-[#13693a] via-[#8cbf44] to-[#13693a]">VS</b>
+                <b className="bg-linear-to-r from-[#13693a] via-[#8cbf44] to-[#13693a]">
+                  VS
+                </b>
               </div>
             </article>
           ))}

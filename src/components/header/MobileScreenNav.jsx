@@ -8,11 +8,11 @@ import { IoAdd } from "react-icons/io5";
 import { getWishList } from "../../services/api/wishlistApi";
 import { useQuery } from "@tanstack/react-query";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import BASE_URL from "../../../config";
+import BASE_URL from "../../config";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import toastError from "../../assets/images/toastError.jpg";
+import toastError from "../../assets/toastError.jpg";
 import { setTriggerLogin } from "../../redux/features/Auth/AuthSlice";
 
 const MobileScreenNav = () => {
