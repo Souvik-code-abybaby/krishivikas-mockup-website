@@ -13,18 +13,18 @@ export default function ProductCard({
   onOpen,
   onClick,
 }) {
-    const DEFAULT_TOKEN =
+  const DEFAULT_TOKEN =
     "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1";
   const token = useSelector((state) => state.auth.token)
     ? useSelector((state) => state.auth.token)
     : DEFAULT_TOKEN;
-   const { data: categoryList } = useQuery({
-      queryKey: ["category-list", 1, token],
-      queryFn: () => getCategoryList(1, token),
-    });
+  const { data: categoryList } = useQuery({
+    queryKey: ["category-list", 1, token],
+    queryFn: () => getCategoryList(1, token),
+  });
   const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
-console.log(categoryList)
+  console.log(categoryList);
   return (
     <article
       className={`product-card ${compact ? "compact" : ""} cursor-pointer hover:scale-102`}
@@ -41,7 +41,7 @@ console.log(categoryList)
           }}
           aria-label="Add to wishlist"
         >
-   <img src={categoryList?.[0]?.category_icon} alt="" className="p-1"/>
+          <img src={categoryList?.[0]?.category_icon} alt="" className="p-1" />
         </button>
       </div>
       <div className="product-body">
@@ -71,7 +71,10 @@ console.log(categoryList)
             <span className="location">
               <Icon name="location" size={14} /> Punjab
             </span>
-            <button className="primary full bg-linear-to-r from-[#13693a] via-[#8cbf44] to-[#13693a]" onClick={onOpen}>
+            <button
+              className="primary full bg-linear-to-r from-[#13693a] via-[#8cbf44] to-[#13693a]"
+              onClick={onOpen}
+            >
               View Details
             </button>
           </>

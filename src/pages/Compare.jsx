@@ -169,6 +169,9 @@ function CategorySelect({ options, value, onChange, disabled, className }) {
 export default function ComparePage() {
   const DEFAULT_TOKEN =
     "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1";
+        useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []); 
   const token = useSelector((state) => state.auth.token)
     ? useSelector((state) => state.auth.token)
     : DEFAULT_TOKEN;

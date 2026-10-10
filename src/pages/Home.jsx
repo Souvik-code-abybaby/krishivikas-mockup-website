@@ -25,7 +25,9 @@ import { dealerSlug } from "./Dealer";
 import { Slide } from "react-awesome-reveal";
 import AppSidebar from "../components/AppSidebar";
 import Testimonials from "../components/testimonials/Testimonials";
+
 export default function HomePage({ setPage }) {
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [scrollDirection, setScrollDirection] = useState("down");
   useEffect(() => {
@@ -153,7 +155,7 @@ export default function HomePage({ setPage }) {
             <p>
               Use our compare feature to find the best option for your needs.
             </p>
-            <button className="light-btn" onClick={() => setPage("compare")}>
+            <button className="light-btn" onClick={() => navigate("/compare")}>
               Compare Now →
             </button>
           </div>

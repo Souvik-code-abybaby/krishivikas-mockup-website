@@ -5,7 +5,20 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import AppSidebar from "../AppSidebar";
 import { Calculator, GitCompare, BookOpen, LayoutGrid } from "lucide-react";
+import {
+  
 
+
+
+  Tractor,
+  Truck,
+  Wheat,
+  Wrench,
+  CircleDot,
+  Sprout,
+  FlaskConical,
+  Bug,
+} from "lucide-react";
 const LANGUAGE_LABELS = { en: "English", hi: "हिन्दी", bn: "বাংলা" };
 
 // Items shown inside the "More" dropdown
@@ -28,14 +41,14 @@ const words = [
 
 const nav = [
   { label: "Home", path: "/" },
-  { label: "Tractors", path: "/category", page: "tractors" },
-  { label: "Commercial Vehicle", path: "/category" },
-  { label: "Harvesters", path: "/category" },
-  { label: "Implements", path: "/category" },
-  { label: "Tyres", path: "/category" },
-  { label: "Seeds", path: "/category" },
-  { label: "Fertilizers", path: "/category" },
-  { label: "Pesticides", path: "/category" },
+  { label: "Tractors", path: "/category", page: "tractors", icon: Tractor },
+  { label: "Commercial Vehicle", path: "/category", icon: Truck },
+  { label: "Harvesters", path: "/category", icon: Wheat },
+  { label: "Implements", path: "/category", icon: Wrench },
+  { label: "Tyres", path: "/category", icon: CircleDot },
+  { label: "Seeds", path: "/category", icon: Sprout },
+  { label: "Fertilizers", path: "/category", icon: FlaskConical },
+  { label: "Pesticides", path: "/category", icon: Bug },
   { label: "More", action: "more" },
 ];
 
@@ -52,7 +65,6 @@ export default function Header({ page, setPage }) {
   // "More" dropdown state
   const [moreOpen, setMoreOpen] = useState(false);
   const [morePos, setMorePos] = useState({ top: 0, right: 0 });
-  const moreBtnRef = useRef(null);
   const moreMenuRef = useRef(null);
 
   // Logged-in user for the sidebar profile card.
@@ -70,9 +82,10 @@ export default function Header({ page, setPage }) {
     navigate("/");
   };
 
-  // Place the dropdown under the "More" button
-  const toggleMore = () => {
-    const rect = moreBtnRef.current.getBoundingClientRect();
+  // Place the dropdown under whichever "More" button was clicked
+  // (the one in the nav bar on desktop, or the one in the header on mobile)
+  const toggleMore = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
     setMorePos({
       top: rect.bottom + 8,
       right: Math.max(8, window.innerWidth - rect.right),
@@ -105,7 +118,7 @@ export default function Header({ page, setPage }) {
     const onDown = (e) => {
       if (
         !moreMenuRef.current?.contains(e.target) &&
-        !moreBtnRef.current?.contains(e.target)
+        !e.target.closest("[data-more-btn]")
       ) {
         setMoreOpen(false);
       }
@@ -155,6 +168,25 @@ export default function Header({ page, setPage }) {
             }}
           />
 
+          {/* Mobile-only "More" button: top-right corner of the header (<= 720px) */}
+          <button
+            type="button"
+            data-more-btn
+            onClick={toggleMore}
+            aria-haspopup="menu"
+            aria-expanded={moreOpen}
+            className="more-btn-mobile"
+          >
+            <LayoutGrid
+              size={16}
+              style={{
+                transform: moreOpen ? "rotate(90deg)" : "rotate(0deg)",
+                transition: "transform 300ms cubic-bezier(0.22,1,0.36,1)",
+              }}
+            />
+            More
+          </button>
+
           <label className="search flex w-full max-w-[600px] items-center gap-3.5 h-9 px-4 bg-[#f4f7f5] border border-[#dde7e0]  text-[#13693a] transition-[border-color,box-shadow,background-color] duration-200 focus-within:bg-white rounded-full focus-within:border-[#13693a] focus-within:ring-[3px] focus-within:ring-[#13693a]/15">
             <div className="relative flex-1">
               <input
@@ -190,7 +222,7 @@ export default function Header({ page, setPage }) {
             item.action === "more" ? (
               <button
                 key={item.label}
-                ref={moreBtnRef}
+                data-more-btn
                 type="button"
                 onClick={toggleMore}
                 aria-haspopup="menu"
@@ -210,12 +242,15 @@ export default function Header({ page, setPage }) {
               <button
                 key={item.label}
                 className={activeNav === item.label ? "active" : ""}
+                aria-label={item.label}
+                title={item.label}
                 onClick={() => {
                   setActiveNav(item.label);
                   navigate(item.path);
                 }}
               >
-                {item.label}
+                {item.icon && <item.icon size={22} className="nav-icon" />}
+                <span className="nav-label">{item.label}</span>
               </button>
             ),
           )}

@@ -1,6 +1,8 @@
-export default function Filters() {
-  return (
-    <aside className="filters">
+import { useState } from "react";
+export default function Filters({ onApply }) {
+  const [dirty, setDirty] = useState(false);
+  return (<>
+<aside className="filters" onChange={() => setDirty(true)}>
       <h2>Filters</h2>
       <fieldset>
         <legend>Category</legend>
@@ -48,5 +50,20 @@ export default function Filters() {
         ))}
       </fieldset>
     </aside>
+    {dirty && (
+  <div className="filter-apply">
+    <button
+      type="button"
+      className="primary full"
+      onClick={() => {
+        setDirty(false);
+        onApply?.();
+      }}
+    >
+      Apply Filters
+    </button>
+  </div>
+)}
+</>
   );
 }

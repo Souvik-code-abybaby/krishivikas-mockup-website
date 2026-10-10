@@ -63,7 +63,7 @@
 //     </main>
 //   );
 // }
-import { useState, useMemo,useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumb";
 import InnerHero from "../components/InnerHero";
@@ -92,12 +92,72 @@ const staticBanners = [
 ];
 
 export default function CategoryPage({ setPage }) {
-    useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+  const [filterDirty, setFilterDirty] = useState(false);
+  const closeFilters = () => {
+    setFilters(false);
+  
+  };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  // Auto-scroll every banner row (only scrolls when it is a carousel, i.e. 1-column layout)
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const rows = Array.from(document.querySelectorAll(".banner-row"));
+    const paused = new Set();
+
+    const cleanups = rows.map((row) => {
+      let t;
+      const pause = () => {
+        clearTimeout(t);
+        paused.add(row);
+      };
+      const resume = (delay) => {
+        clearTimeout(t);
+        t = setTimeout(() => paused.delete(row), delay);
+      };
+      const onLeave = () => resume(0);
+      const onTouchEnd = () => resume(2500);
+
+      row.addEventListener("mouseenter", pause);
+      row.addEventListener("mouseleave", onLeave);
+      row.addEventListener("touchstart", pause, { passive: true });
+      row.addEventListener("touchend", onTouchEnd);
+
+      return () => {
+        clearTimeout(t);
+        row.removeEventListener("mouseenter", pause);
+        row.removeEventListener("mouseleave", onLeave);
+        row.removeEventListener("touchstart", pause);
+        row.removeEventListener("touchend", onTouchEnd);
+      };
+    });
+
+    const id = setInterval(() => {
+      rows.forEach((row) => {
+        if (paused.has(row)) return;
+        if (row.scrollWidth <= row.clientWidth + 1) return; // desktop grid: nothing to scroll
+
+        const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+        const step = row.firstElementChild.getBoundingClientRect().width + gap;
+        const atEnd = row.scrollLeft + row.clientWidth >= row.scrollWidth - 4;
+
+        row.scrollTo({
+          left: atEnd ? 0 : row.scrollLeft + step,
+          behavior: "smooth",
+        });
+      });
+    }, 3000);
+
+    return () => {
+      clearInterval(id);
+      cleanups.forEach((fn) => fn());
+    };
+  }, []);
   const [filters, setFilters] = useState(false);
   const [tab, setTab] = useState("New");
-const navigate=useNavigate();
+  const navigate = useNavigate();
   // Same mechanism as CategoryWiseAllProduct: 6 products + 3 banners, repeated
   const interleavedItems = useMemo(() => {
     const result = [];
@@ -116,13 +176,15 @@ const navigate=useNavigate();
       if (chunk.length === PRODUCTS_PER_CHUNK) {
         const startIdx =
           (groupNumber * BANNERS_PER_GROUP) % staticBanners.length;
-        for (let i = 0; i < BANNERS_PER_GROUP; i++) {
-          const banner = staticBanners[(startIdx + i) % staticBanners.length];
-          result.push({
-            ...banner,
-            id: `${banner.id}-group-${groupNumber}`, // unique key per group
-          });
-        }
+        const banners = Array.from({ length: BANNERS_PER_GROUP }, (_, i) => {
+          const b = staticBanners[(startIdx + i) % staticBanners.length];
+          return { ...b, id: `${b.id}-group-${groupNumber}` };
+        });
+        result.push({
+          type: "banners",
+          id: `banner-group-${groupNumber}`,
+          banners,
+        });
         groupNumber++;
       }
     }
@@ -141,14 +203,45 @@ const navigate=useNavigate();
         <button className="mobile-filter" onClick={() => setFilters(!filters)}>
           <Icon name="filter" /> Filters
         </button>
-        <div className={filters ? "filter-wrap visible" : "filter-wrap"}>
-          <Filters />
-       
+        <div
+          className={filters ? "filter-wrap visible" : "filter-wrap"}
+          onChange={() => setFilterDirty(true)}
+          onClick={(e) => {
+            if (e.target === e.currentTarget)
+              closeFilters(); // tap on the dark area
+            else if (e.target.closest(".filters button")) setFilterDirty(true);
+          }}
+        >
+          <div className="filter-panel">
+            <button
+              type="button"
+              className="filter-close"
+              onClick={closeFilters}
+              aria-label="Close filters"
+            >
+              ✕
+            </button>
+            <div className="filter-panel-body">
+              <Filters onApply={closeFilters} />
+            </div>
+          </div>
+
+          {filterDirty && (
+            <div className="filter-apply">
+              <button
+                type="button"
+                className="primary full"
+                onClick={closeFilters}
+              >
+                Apply Filters
+              </button>
+            </div>
+          )}
         </div>
         <div className="catalog">
           <div className="catalog-tools">
             <div className="tabs">
-              {["New",  "Used","Rent"].map((t) => (
+              {["New", "Used", "Rent"].map((t) => (
                 <button
                   className={tab === t ? "active" : ""}
                   onClick={() => setTab(t)}
@@ -172,26 +265,19 @@ const navigate=useNavigate();
           <div className="product-grid">
             {interleavedItems.map((item) => {
               // Banner item
-              if (item.banner_image) {
+              if (item.type === "banners") {
                 return (
-                  <Link
-                    key={`banner-${item.id}`}
-                    to={item.link || "#"}
-                    className="banner-card"
-                  >
-                    <img
-                      src={item.banner_image}
-                      alt="Banner"
-                      loading="lazy"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        minHeight: 150,
-                        objectFit: "cover",
-                        borderRadius: 12,
-                      }}
-                    />
-                  </Link>
+                  <div className="banner-row" key={item.id}>
+                    {item.banners.map((b) => (
+                      <Link
+                        key={b.id}
+                        to={b.link || "#"}
+                        className="banner-card"
+                      >
+                        <img src={b.banner_image} alt="Banner" loading="lazy" />
+                      </Link>
+                    ))}
+                  </div>
                 );
               }
 
@@ -201,7 +287,7 @@ const navigate=useNavigate();
                   key={item.name}
                   product={item}
                   onOpen={() => setPage("product")}
-                  onClick={()=>navigate("/product")}
+                  onClick={() => navigate("/product")}
                 />
               );
             })}

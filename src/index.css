@@ -404,10 +404,12 @@ img {
 }
 .dots {
   position: absolute;
-  right: 45%;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 18px;
   display: flex;
   gap: 6px;
+  z-index: 3;
 }
 .dots span {
   width: 7px;
@@ -489,6 +491,9 @@ section {
   gap: 12px;
   scrollbar-width: none;
 }
+.more-btn-mobile {
+  display: none;
+}
 .product-card {
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -550,6 +555,7 @@ section {
   color: var(--slate);
   font-size: 12px;
   margin: 0 0 5px;
+  
 }
 .product-body .price {
   color: var(--green-950);
@@ -1730,6 +1736,25 @@ footer button:not(.brand) {
   color: white;
   border: 2px solid white;
 }
+.banner-row {
+  grid-column: 1 / -1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.banner-card {
+  display: block;
+  min-width: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.banner-card img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
 .comparison-card > button {
   float: right;
   border: 1px solid var(--green-800);
@@ -1739,7 +1764,7 @@ footer button:not(.brand) {
   margin-top: -24px;
   position: relative;
 }
-
+.nav-icon { display: none; }
 @media (max-width: 1000px) {
   .header-actions span {
     display: none;
@@ -1747,9 +1772,9 @@ footer button:not(.brand) {
   .header-actions {
     gap: 12px;
   }
-  .main-nav button:nth-child(n + 8) {
+  /* .main-nav button:nth-child(n + 8) {
     display: none;
-  }
+  } */
   .category-grid {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -1797,6 +1822,20 @@ footer button:not(.brand) {
 }
 
 @media (max-width: 720px) {
+    .more-btn-mobile {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto; /* pushes it to the top-right corner */
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
   .container {
     width: min(100% - 24px, 1180px);
   }
@@ -1834,7 +1873,7 @@ footer button:not(.brand) {
   .header-actions button:nth-child(3) {
     display: none;
   }
-  .main-nav {
+  /* .main-nav {
     display: none;
     position: absolute;
     top: 119px;
@@ -1859,7 +1898,58 @@ footer button:not(.brand) {
   .main-nav button.active::after {
     width: 30px;
     right: auto;
-  }
+  } */
+   .main-nav {
+  display: flex;
+  position: fixed;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(52px + env(safe-area-inset-bottom, 0px));
+  padding: 0 8px env(safe-area-inset-bottom, 0px);
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-top: 1px solid var(--line);
+  border-bottom: 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+}
+.main-nav::-webkit-scrollbar {
+  display: none;
+}
+.main-nav button,
+.main-nav button:nth-child(n + 8) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 0;      /* every icon gets an equal share of the width */
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+}
+.main-nav .nav-label { display: none; }
+.main-nav .nav-icon { display: block; }
+/* hide Home and More in the bottom bar */
+.main-nav button:first-child,
+.main-nav button:last-child {
+  display: none;
+}
+/* active indicator on top of the tab, since the bar sits at the bottom */
+.main-nav button.active::after {
+  top: 0;
+  bottom: auto;
+  left: 12px;
+  right: 12px;
+  border-radius: 0 0 3px 3px;
+}
+
+/* keep page content (and footer) from hiding behind the fixed bar */
+body {
+  padding-bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+}
   .home-page {
     padding-top: 10px;
   }
@@ -2007,14 +2097,27 @@ footer button:not(.brand) {
   .product-grid {
     grid-template-columns: 1fr;
   }
-  .product-grid .product-card {
-    display: grid;
-    grid-template-columns: 42% 1fr;
-  }
-  .product-grid .product-image {
-    height: 100%;
-    min-height: 180px;
-  }
+.product-grid .product-card {
+  display: flex;
+  flex-direction: column;
+}
+.product-grid .product-image {
+  height: clamp(170px, 48vw, 260px);
+  min-height: 0;
+}
+.banner-row {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.banner-row::-webkit-scrollbar {
+  display: none;
+}
+.banner-card {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
   .product-detail {
     grid-template-columns: 1fr;
   }

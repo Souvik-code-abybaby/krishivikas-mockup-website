@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { useMemo } from "react";
 import InnerHero from "../components/InnerHero";
+import { useEffect } from "react";
 export default function EMIPage() {
   const [amount, setAmount] = useState(500000);
   const [rate, setRate] = useState(8.5);
   const [years, setYears] = useState(5);
   const [tab, setTab] = useState("Tractor");
+      useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
   const emi = useMemo(() => {
     const r = rate / 12 / 100,
       n = years * 12;
