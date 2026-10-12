@@ -236,7 +236,7 @@ const BreadCrumb = ({ pageTitle, customBreadcrumbs }) => {
           !agriInputTypes.includes(actualCategoryRaw?.toLowerCase()) && (
             <>
               <FaChevronRight />
-              <p className="hover:text-lightgreen px-3 capitalize">
+              <p className="hover:text-lightgreen px-3 capitalize ">
                 {getTypeDisplay(actualType)}
               </p>
             </>
@@ -281,7 +281,7 @@ const BreadCrumb = ({ pageTitle, customBreadcrumbs }) => {
           <div className="breadcrumb-content order-1 lg:order-2 flex flex-col items-center">
             {renderBreadcrumbLinks()}
             <p
-              className="text-lightgreen md:text-5xl text-3xl font-bold text-center mt-3 uppercase"
+              className="text-[#8CBF44] md:text-5xl text-3xl font-bold text-center mt-3 uppercase"
               style={{ textShadow: "0 0 15px black" }}
             >
               {getMainTitle()}
@@ -295,7 +295,7 @@ const BreadCrumb = ({ pageTitle, customBreadcrumbs }) => {
         <div className="breadcrumb-content relative z-10">
           {renderBreadcrumbLinks()}
           <p
-            className="text-lightgreen md:text-5xl text-3xl font-bold text-center mt-3 uppercase "
+            className="text-[#8CBF44] md:text-5xl text-3xl font-bold text-center mt-3 uppercase "
             style={{ textShadow: "0 0 15px black" }}
           >
             {getMainTitle()}
