@@ -13,6 +13,12 @@ import FaqPage from "../pages/FaqPage";
 import DealerPage from "../pages/Dealer";
 import Iffcopage from "../pages/IffcoPage";
 // import Iffcopage from '../pages/IffcoPage'
+import RefundPolicy from "../pages/RefundPolicy";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
+import ContactUs from "../pages/ContactUs";
+import TermsOfUse from "../pages/TermsOfUse";
+import AboutUs from "../pages/AboutUs";
+
 const AllRoutes = () => {
   return (
     <div>
@@ -28,6 +34,21 @@ const AllRoutes = () => {
             </>
           }
         />
+        <Route
+          path="/privacy-policy"
+          element={
+            <>
+              <Header />
+              <PrivacyPolicy />
+              <AppDownloadPopup />
+              <Footer />
+            </>
+          }
+        />
+        <Route path="/terms-of-use" element={<><Header/><TermsOfUse/><AppDownloadPopup/><Footer/></>} />
+        <Route path="/refund-policy" element={<><Header/><RefundPolicy/><AppDownloadPopup/><Footer/></>} />
+        <Route path="/about" element={<><Header/><AboutUs/><AppDownloadPopup/><Footer/></>} />
+        <Route path="/contact" element={<><Header/><ContactUs/><AppDownloadPopup/><Footer/></>} />
         <Route
           path="/emi"
           element={

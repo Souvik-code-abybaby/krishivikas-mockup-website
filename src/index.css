@@ -932,6 +932,9 @@ footer button:not(.brand) {
   color: var(--slate);
   font-size: 13px;
   margin: 14px 0 10px;
+  overflow: hidden;
+ border-radius: 15px;
+  
 }
 .hero.inner {
   min-height: 170px;
@@ -1586,6 +1589,16 @@ footer button:not(.brand) {
   font-size: 20px;
   line-height: 1.25;
   margin: 0;
+}
+.footer__social_icons a {
+  @apply border p-2 rounded;
+}
+
+.footer__social_icons a:hover,
+.sell__links a:hover,
+.buy__links a:hover,
+.rent__links a:hover {
+  @apply scale-95 text-green-300 transition-all duration-200;
 }
 .compare-selector {
   margin-top: -20px;
