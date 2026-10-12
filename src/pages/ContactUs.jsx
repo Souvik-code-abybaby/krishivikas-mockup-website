@@ -44,15 +44,15 @@ console.log("contcat page mounted");
     };
 
     return (
-        <main className="conatainer">
+        <main className="container">
             {/* Dynamic BreadCrumb Component - automatically shows video for non-category pages */}
             <BreadCrumb 
                 pageTitle={t('contact us')} 
                 customBreadcrumbs={['contact us']} 
             />
 
-            <section id="contact" className="contact my-5">
-                <div className="container " data-aos="fade-up">
+            {/* <section id="contact" className="contact my-5"> */}
+                <div className=" mt-10" data-aos="fade-up">
                     {/* <div>
                         <img
                             src={kvBanner}
@@ -147,7 +147,7 @@ console.log("contcat page mounted");
                         </div>
                     </div>
                 </div>
-            </section>
+            {/* </section> */}
         
         </main>
     )

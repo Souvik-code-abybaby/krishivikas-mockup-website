@@ -5,6 +5,8 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import AppSidebar from "../AppSidebar";
 import { Calculator, GitCompare, BookOpen, LayoutGrid } from "lucide-react";
+import { getCategoryList } from "../../services/api/categoryApi";
+import { useQuery } from "@tanstack/react-query";
 import {
   
 
@@ -53,6 +55,12 @@ const nav = [
 ];
 
 export default function Header({ page, setPage }) {
+    const DEFAULT_TOKEN = "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1"
+      const token = useSelector((state) => state.auth.token)? useSelector((state) => state.auth.token):DEFAULT_TOKEN;
+   const { data: categoryList } = useQuery({
+      queryKey: ["category-list", 1, token],
+      queryFn: () => getCategoryList(1, token),
+    });
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [lang, setLang] = useState("en");
   const navigate = useNavigate();

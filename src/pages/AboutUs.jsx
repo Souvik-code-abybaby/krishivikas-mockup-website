@@ -20,8 +20,8 @@ const AboutUs = () => {
                 customBreadcrumbs={['about us']}
             />
             
-            <section className="about-us container md:p-5 p-5 my-10">
-                <div className="relative">
+            {/* <section className="about-us container md:p-5 p-5 my-10"> */}
+                <div className="relative mt-10">
                     <div className="icon-comma absolute -top-10 flex text-black rotate-180 text-6xl  -left-5">
                         <SiComma className="text-lightgreen" />
                         <SiComma className="text-darkGreen -ms-6" />
@@ -61,7 +61,7 @@ const AboutUs = () => {
                     </div>
 
                 </div>
-            </section>
+            {/* </section> */}
         </main>
     )
 }

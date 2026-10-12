@@ -15,9 +15,9 @@ const PrivacyPolicy = () => {
                 pageTitle={t('Privacy Policy')}
                 customBreadcrumbs={['Privacy Policy']}
             />
-            
-            <section className="privacy-policy-kv p-5">
-                <div className="privacy-policy-page container md:p-5 p-2 border border-darkGreen rounded-2xl">
+{/*             
+            <section className="privacy-policy-kv p-5"> */}
+                <div className="privacy-policy-page  md:p-5 p-2 border border-darkGreen rounded-2xl mt-10">
                     <p className="text-2xl my-3 font-semibold text-center">This privacy notice for ABYBABY E-COM PRIVATE LIMITED</p>
                     <p>
                         (Doing business as Krishi Vikas Udyog) ('we', 'us', or 'our'), describes how
@@ -632,7 +632,7 @@ const PrivacyPolicy = () => {
                         </p>
                     </section>
                 </div>
-            </section>
+            {/* </section> */}
         </main>
     )
 }

@@ -16,8 +16,8 @@ const TermsOfUse = () => {
                 customBreadcrumbs={['Terms of use']}
             />
             
-            <section className="terms-of-use p-5">
-                <div className="container md:p-5 p-2 border border-darkGreen rounded-2xl">
+            {/* <section className="terms-of-use p-5"> */}
+                <div className="mt-8 md:p-5 p-2 border border-darkGreen rounded-2xl">
                     <h1 className="text-xl text-center my-3 font-semibold">Welcome to Krishi Vikas's Terms of Use</h1>
                     <p>
                         This legal agreement is an electronic record in terms of the Information
@@ -702,7 +702,7 @@ const TermsOfUse = () => {
                         </p>
                     </ul>
                 </div>
-            </section>
+            {/* </section> */}
         </main>
     )
 }

@@ -271,9 +271,9 @@ const RefundPolicy = () => {
                 pageTitle={t('Refund Policy')}
                 customBreadcrumbs={['Refund Policy']}
             />
-            
-            <section className="privacy-policy-kv p-5">
-                <div className="privacy-policy-page container md:p-5 p-2 border border-darkGreen">
+{/*             
+            <section className="privacy-policy-kv p-5"> */}
+                <div className="privacy-policy-page  md:p-5 p-2 border border-darkGreen rounded-2xl mt-8">
 
                     <p>
                         Krishi Vikas (krishivikas.com) being a marketing platform, we strive to provide transparent, trustworthy services to all our users, including farmers, sellers, and buyers across India. Please review our refund policy carefully before making any payment.
@@ -347,7 +347,7 @@ const RefundPolicy = () => {
                     </p>
 
                 </div>
-            </section>
+            {/* </section> */}
         </main>
     )
 }
