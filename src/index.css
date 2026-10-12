@@ -1779,6 +1779,7 @@ footer button:not(.brand) {
   position: relative;
 }
 .nav-icon { display: none; }
+.mobile-category-nav { display: none; }
 .filter-panel,
 .filter-panel-body {
   display: contents; /* invisible wrappers on desktop */
@@ -1954,6 +1955,51 @@ footer button:not(.brand) {
 }
 .main-nav .nav-label { display: none; }
 .main-nav .nav-icon { display: block; }
+.main-nav { display: none; }   /* old static-icon bar is no longer used on mobile */
+
+.mobile-category-nav {
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  height: calc(52px + env(safe-area-inset-bottom, 0px));
+  padding: 0 8px env(safe-area-inset-bottom, 0px);
+  align-items: stretch;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: #fff;
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+}
+.mobile-category-nav::-webkit-scrollbar { display: none; }
+
+.mobile-category-nav button {
+  position: relative;
+  flex: 1 0 44px;          /* equal share, but scrolls if there are many categories */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+.mobile-cat-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+.mobile-category-nav button.active::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12px;
+  right: 12px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--green-700);
+}
 /* hide Home and More in the bottom bar */
 .main-nav button:first-child,
 .main-nav button:last-child {

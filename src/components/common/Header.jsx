@@ -8,10 +8,6 @@ import { Calculator, GitCompare, BookOpen, LayoutGrid } from "lucide-react";
 import { getCategoryList } from "../../services/api/categoryApi";
 import { useQuery } from "@tanstack/react-query";
 import {
-  
-
-
-
   Tractor,
   Truck,
   Wheat,
@@ -55,13 +51,17 @@ const nav = [
 ];
 
 export default function Header({ page, setPage }) {
-    const DEFAULT_TOKEN = "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1"
-      const token = useSelector((state) => state.auth.token)? useSelector((state) => state.auth.token):DEFAULT_TOKEN;
-   const { data: categoryList } = useQuery({
-      queryKey: ["category-list", 1, token],
-      queryFn: () => getCategoryList(1, token),
-    });
+  const DEFAULT_TOKEN =
+    "39767|0Lh5B3iICCyTLnDHhGwFeytBbGTLfKOzU7JliXc81e43c3e1";
+  const token = useSelector((state) => state.auth.token)
+    ? useSelector((state) => state.auth.token)
+    : DEFAULT_TOKEN;
+  const { data: categoryList } = useQuery({
+    queryKey: ["category-list", 1, token],
+    queryFn: () => getCategoryList(1, token),
+  });
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeCatId, setActiveCatId] = useState(null);
   const [lang, setLang] = useState("en");
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -264,7 +264,36 @@ export default function Header({ page, setPage }) {
           )}
         </nav>
       </header>
-
+      {/* Mobile bottom bar: icons come from the category API */}
+      <nav className="mobile-category-nav" aria-label="Categories">
+        {(categoryList ?? []).map((c, i) => {
+          const isActive =
+            pathname === "/category" &&
+            (activeCatId === c.category_id ||
+              (activeCatId === null && i === 0));
+          return (
+            <button
+              key={c.category_id}
+              type="button"
+              className={isActive ? "active" : ""}
+              aria-label={c.category_name}
+              title={c.category_name}
+              onClick={() => {
+                setActiveCatId(c.category_id);
+                setActiveNav(null);
+                navigate("/category");
+              }}
+            >
+              <img
+                src={c.category_icon}
+                alt=""
+                className="mobile-cat-icon"
+                loading="lazy"
+              />
+            </button>
+          );
+        })}
+      </nav>
       {/* "More" dropdown — fixed so a scrollable nav can't clip it */}
       {/* Always mounted so it can animate both open AND close */}
       <div
