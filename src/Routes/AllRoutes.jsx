@@ -18,128 +18,42 @@ import PrivacyPolicy from "../pages/PrivacyPolicy";
 import ContactUs from "../pages/ContactUs";
 import TermsOfUse from "../pages/TermsOfUse";
 import AboutUs from "../pages/AboutUs";
-
+import { useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+const Layout = () => {
+  const { pathname } = useLocation();
+  return (
+    <>
+      <Header />
+      <Outlet />
+      {/* key changes on every navigation, so the popup remounts and shows again */}
+      <AppDownloadPopup key={pathname} />
+      <Footer />
+    </>
+  );
+};
 const AllRoutes = () => {
   return (
     <div>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Header />
-              <HomePage />
-              <AppDownloadPopup />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/privacy-policy"
-          element={
-            <>
-              <Header />
-              <PrivacyPolicy />
-              <AppDownloadPopup />
-              <Footer />
-            </>
-          }
-        />
-        <Route path="/terms-of-use" element={<><Header/><TermsOfUse/><AppDownloadPopup/><Footer/></>} />
-        <Route path="/refund-policy" element={<><Header/><RefundPolicy/><AppDownloadPopup/><Footer/></>} />
-        <Route path="/about" element={<><Header/><AboutUs/><AppDownloadPopup/><Footer/></>} />
-        <Route path="/contact" element={<><Header/><ContactUs/><AppDownloadPopup/><Footer/></>} />
-        <Route
-          path="/emi"
-          element={
-            <>
-              <Header />
-              <EMIPage />
-              <AppDownloadPopup />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/compare"
-          element={
-            <>
-              <Header />
-              <ComparePage />
-              <AppDownloadPopup />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/category"
-          element={
-            <>
-              <Header />
-              <CategoryPage />
-              <AppDownloadPopup />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <>
-              <Header />
-              <ProfilePage />
-              <AppDownloadPopup />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/product"
-          element={
-            <>
-              <Header />
-              <ProductPage />
-              <AppDownloadPopup />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/iffco"
-          element={
-            <>
-              <Header />
-              <Iffcopage />
-              <AppDownloadPopup />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/frequentlyaskedquestions"
-          element={
-            <>
-              <Header />
-              <FaqPage />
-              <AppDownloadPopup />
-              <Footer />
-            </>
-          }
-        />
-        <Route
-          path="/dealer/:dealerId"
-          element={
-            <>
-              <Header />
-              <DealerPage />
-              <AppDownloadPopup />
-              <Footer />
-            </>
-          }
-        />
+        <Route element={<Layout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-use" element={<TermsOfUse />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/emi" element={<EMIPage />} />
+          <Route path="/compare" element={<ComparePage />} />
+          <Route path="/category" element={<CategoryPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/product" element={<ProductPage />} />
+          <Route path="/iffco" element={<Iffcopage />} />
+          <Route path="/frequentlyaskedquestions" element={<FaqPage />} />
+          <Route path="/dealer/:dealerId" element={<DealerPage />} />
+        </Route>
       </Routes>
     </div>
-  );
-};
+  )}
 
 export default AllRoutes;

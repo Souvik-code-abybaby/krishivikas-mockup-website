@@ -62,8 +62,8 @@ export default function Footer({ setPage }) {
             </button>
           ))}
         </div>
-        <div className="footer_social my-5 ">
-          <p className="uppercase text-sm text-white">Follow Us</p>
+        <div className="footer_social  ">
+           <h3>Follow Us</h3>
           <div className="footer__social_icons text-white flex gap-3 mt-2">
             <a href="https://www.facebook.com/joinkrishivikas">
               <FaFacebookF />
