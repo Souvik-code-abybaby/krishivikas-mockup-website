@@ -20,6 +20,9 @@ import TermsOfUse from "../pages/TermsOfUse";
 import AboutUs from "../pages/AboutUs";
 import { useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import Dashboard from "../pages/profile/Dashboard";
+import Products from "../components/profile/Products/Products";
+import AddProduct from "../components/profile/Products/AddProduct";
 const Layout = () => {
   const { pathname } = useLocation();
   return (
@@ -47,6 +50,9 @@ const AllRoutes = () => {
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/category" element={<CategoryPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+           <Route path="/profile/dashboard" element={<Dashboard />} />
+            <Route path="/profile/products" element={<Products />} />
+              <Route path="/profile/add-product" element={<AddProduct />} />
           <Route path="/product" element={<ProductPage />} />
           <Route path="/iffco" element={<Iffcopage />} />
           <Route path="/frequentlyaskedquestions" element={<FaqPage />} />

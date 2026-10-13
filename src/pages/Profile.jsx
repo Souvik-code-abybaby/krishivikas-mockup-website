@@ -1,35 +1,11 @@
-
 import Icon from "../components/Icon";
+import ProfileSidebar from "../components/profile/ProfileSidebar";
 
 export default function ProfilePage() {
-  const menu = [
-    "My Profile",
-    "My Posts",
-    "My Leads",
-    "My Boosts",
-    "My Banner",
-    "Plan",
-    "Settings",
-    "Logout",
-  ];
   return (
     <main className="profile-page">
-      <aside className="profile-sidebar">
-        <div className="mini-profile">
-          <div className="profile-photo">RS</div>
-          <div>
-            <strong>Rahul Sharma</strong>
-            <small>rahul@gmail.com</small>
-          </div>
-        </div>
-        <nav>
-          {menu.map((x, i) => (
-            <button className={i === 0 ? "active" : ""} key={x}>
-              <Icon name={i === 7 ? "logout" : "user"} /> {x}
-            </button>
-          ))}
-        </nav>
-      </aside>
+      <ProfileSidebar />
+
       <section className="profile-content">
         <div className="profile-heading">
           <h1>My Profile</h1>
