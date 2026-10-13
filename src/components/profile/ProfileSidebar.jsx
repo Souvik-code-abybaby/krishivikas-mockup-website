@@ -51,14 +51,14 @@ const crmItems = [
     icon: <Image size={18} />,
     label: "Banners",
     children: [
-      { label: "New Banner", path: "/profile/banners/new" },
+      { label: "New Banner", path: "/profile/new-banner" },
       { label: "Banner List", path: "/profile/banners" },
     ],
   },
   {
     icon: <CreditCard size={18} />,
     label: "Subscription",
-    path: "/profile/subscription",
+    path: "/profile/subscriptions",
   },
   { icon: <Landmark size={18} />, label: "Schemes", path: "/profile/schemes" },
 ];

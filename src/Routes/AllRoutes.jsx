@@ -23,6 +23,13 @@ import { Outlet } from "react-router-dom";
 import Dashboard from "../pages/profile/Dashboard";
 import Products from "../components/profile/Products/Products";
 import AddProduct from "../components/profile/Products/AddProduct";
+import LeadList from "../pages/leads/Leadlist";
+import FollowUp from "../pages/leads/Followup";
+import NewLeads from "../pages/leads/NewLeads";
+import BannerList from "../pages/banners/BannerList";
+import NewBanner from "../pages/banners/NewBanner";
+import Subscription from "../pages/Subscription";
+import Schemes from "../pages/Schemes";
 const Layout = () => {
   const { pathname } = useLocation();
   return (
@@ -50,9 +57,16 @@ const AllRoutes = () => {
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/category" element={<CategoryPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-           <Route path="/profile/dashboard" element={<Dashboard />} />
-            <Route path="/profile/products" element={<Products />} />
-              <Route path="/profile/add-product" element={<AddProduct />} />
+          <Route path="/profile/dashboard" element={<Dashboard />} />
+          <Route path="/profile/products" element={<Products />} />
+          <Route path="/profile/add-product" element={<AddProduct />} />
+          <Route path="/profile/leads" element={<LeadList />} />
+          <Route path="/profile/banners" element={<BannerList />} />
+          <Route path="/profile/new-banner" element={<NewBanner />} />
+           <Route path="/profile/subscriptions" element={<Subscription />} />
+                      <Route path="/profile/schemes" element={<Schemes />} />
+          <Route path="/profile/leads/follow-up" element={<FollowUp />} />
+          <Route path="/profile/leads/list" element={<NewLeads />} />
           <Route path="/product" element={<ProductPage />} />
           <Route path="/iffco" element={<Iffcopage />} />
           <Route path="/frequentlyaskedquestions" element={<FaqPage />} />
@@ -60,6 +74,7 @@ const AllRoutes = () => {
         </Route>
       </Routes>
     </div>
-  )}
+  );
+};
 
 export default AllRoutes;

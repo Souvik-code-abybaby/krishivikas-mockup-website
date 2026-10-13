@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell
@@ -81,6 +81,9 @@ const kpiCards = [
 ]
 
 export default function Dashboard() {
+    useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [startDate, setStartDate] = useState('2025-07-01')
   const [endDate, setEndDate] = useState('2025-08-04')
 

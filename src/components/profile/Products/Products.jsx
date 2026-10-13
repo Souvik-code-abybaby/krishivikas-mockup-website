@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Search, Download, Edit2, Trash2, Package, CheckCircle, XCircle } from 'lucide-react'
 import ProfileSidebar from '../ProfileSidebar'
-
+import { useEffect } from 'react'
 const products = [
   { id: 1, name: 'Mahindra 575 DI', brand: 'Mahindra', contact: '9876543210', price: '₹6,50,000', status: 'Active', img: 'https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=60&h=60&fit=crop&auto=format' },
   { id: 2, name: 'Swaraj 744 FE', brand: 'Swaraj', contact: '9812345678', price: '₹5,80,000', status: 'Active', img: 'https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=60&h=60&fit=crop&auto=format' },
@@ -24,7 +24,9 @@ export default function Products() {
   const total = products.length
   const active = products.filter(p => p.status === 'Active').length
   const soldOut = products.filter(p => p.status === 'Sold Out').length
-
+ useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <main className="profile-page">
       <ProfileSidebar />
