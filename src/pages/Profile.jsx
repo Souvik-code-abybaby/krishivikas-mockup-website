@@ -1,7 +1,10 @@
 import Icon from "../components/Icon";
 import ProfileSidebar from "../components/profile/ProfileSidebar";
-
+import { useEffect } from "react";
 export default function ProfilePage() {
+      useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   return (
     <main className="profile-page">
       <ProfileSidebar />
