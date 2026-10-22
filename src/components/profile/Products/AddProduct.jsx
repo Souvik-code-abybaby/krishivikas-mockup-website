@@ -215,7 +215,7 @@ export default function AddProduct() {
                 <button
                   onClick={handleMultiSubmit}
                   disabled={verificationStatus === 'pending'}
-                  className="mx-auto self-center p-2.5 bg-linear-to-l from-[#13693A] via-[#8cbf44] to-[#13693A] text-white rounded-xl text-sm font-500 hover:bg-[#0e4f2c] disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="mx-auto  p-2.5 bg-linear-to-l from-[#13693A] via-[#8cbf44] to-[#13693A] text-white rounded-xl text-sm font-500 hover:bg-[#0e4f2c] disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   Submit for Verification
                 </button>

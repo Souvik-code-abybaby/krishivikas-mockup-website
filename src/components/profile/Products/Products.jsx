@@ -39,12 +39,12 @@ export default function Products() {
             { label: 'Active Products', value: active, color: '#16A34A', bg: '#dcfce7', icon: <CheckCircle size={20} /> },
             { label: 'Sold Out', value: soldOut, color: '#64748B', bg: '#f1f5f9', icon: <XCircle size={20} /> },
           ].map(s => (
-            <div key={s.label} className="bg-white rounded-2xl p-4 border border-[#E4E7EC] shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: s.bg, color: s.color }}>
+            <div key={s.label} className="bg-white rounded-2xl p-4 border border-[#E4E7EC] shadow-sm flex items-center sm:gap-4 gap-2">
+              <div className="sm:w-12 sm:h-12 w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: s.bg, color: s.color }}>
                 {s.icon}
               </div>
-              <div>
-                <p className="font-heading font-700 text-2xl text-[#1E293B]">{s.value}</p>
+              <div >
+                <p className="font-heading font-700 sm:text-2xl text-sm text-[#1E293B]">{s.value}</p>
                 <p className="text-xs text-[#64748B]">{s.label}</p>
               </div>
             </div>

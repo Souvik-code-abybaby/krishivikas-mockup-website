@@ -35,9 +35,9 @@ export default function Subscription() {
 
       {renewOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-            <div className="px-6 py-4 border-b border-[#E4E7EC] flex items-center justify-between sticky top-0 bg-white">
-              <h3 className="font-heading font-600 text-[#1E293B]">Choose Subscription Plan</h3>
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[95vh] overflow-y-auto scrollbar-none">
+            <div className="px-6 py-4 border-b border-[#E4E7EC] flex items-center justify-between sticky top-0 bg-white z-20">
+              <h3 className="font-heading font-600 text-[#1E293B] ">Choose Subscription Plan</h3>
               <button onClick={() => setRenewOpen(false)} className="text-[#64748B] hover:text-[#1E293B] text-xl leading-none">×</button>
             </div>
             {!paymentOpen ? (
