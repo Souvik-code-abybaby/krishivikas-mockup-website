@@ -80,7 +80,7 @@ export default function Subscription() {
                 <button
                   disabled={!selectedPlan}
                   onClick={() => setPaymentOpen(true)}
-                  className="mt-5 w-full py-3 bg-[#13693A] text-white rounded-xl font-500 hover:bg-[#0e4f2c] disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="mt-5 w-full py-3 bg-linear-to-r from-[#13693A] via-[#8cbf44] to-[#13693A] text-white rounded-xl font-500 hover:bg-[#0e4f2c] disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Proceed to Payment
                 </button>
@@ -151,7 +151,7 @@ export default function Subscription() {
                     <td className="px-4 py-4">
                       <button
                         onClick={() => setRenewOpen(true)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-[#13693A] text-white text-xs rounded-lg hover:bg-[#0e4f2c] font-500"
+                        className="flex items-center gap-1.5 px-3 py-1.5 [#13693A] bg-linear-to-r from-[#13693A] via-[#8cbf44] to-[#13693A] text-white text-xs rounded-lg hover:bg-[#0e4f2c] font-500"
                       >
                         <RotateCcw size={12} /> Renew
                       </button>

@@ -65,7 +65,7 @@ export default function NewLeads() {
                 </div>
                 <button
                   onClick={() => setViewLead(lead)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-[#13693A] text-white text-xs rounded-lg hover:bg-[#0e4f2c] font-500"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-linear-to-l from-[#13693A] to-[#8cbf44]  text-white text-xs rounded-lg hover:bg-[#0e4f2c] font-500"
                 >
                   <Eye size={13} /> View
                 </button>

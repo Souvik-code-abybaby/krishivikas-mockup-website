@@ -68,7 +68,7 @@ export default function Products() {
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-3 py-1.5 text-xs font-500 rounded-lg border ${filter === f ? 'bg-[#13693A] text-white border-[#13693A]' : 'border-[#E4E7EC] text-[#64748B] hover:border-[#13693A] hover:text-[#13693A]'}`}
+                className={`px-3 py-1.5 text-xs font-500 rounded-lg border ${filter === f ? 'bg-linear-to-bl from-[#13693A] via-[#8cbf44] to-[#13693A] text-white ' : 'border-[#E4E7EC] text-[#64748B] hover:border-[#13693A] hover:text-[#13693A]'}`}
               >
                 {f}
               </button>

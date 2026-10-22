@@ -14,7 +14,7 @@ export default function EditBannerModal({ banner, onClose }) {
           </div>
           <div className="flex gap-3">
             <button onClick={onClose} className="flex-1 py-2.5 border border-[#E4E7EC] text-[#64748B] rounded-xl text-sm">Cancel</button>
-            <button onClick={onClose} className="flex-1 py-2.5 bg-[#13693A] text-white rounded-xl text-sm font-500">Save Changes</button>
+            <button onClick={onClose} className="flex-1 py-2.5 bg-linear-to-r from-[#13693A] via-[#8cbf44] to-[#13693A]  text-white rounded-xl text-sm font-500">Save Changes</button>
           </div>
         </div>
       </div>

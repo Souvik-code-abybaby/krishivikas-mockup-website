@@ -40,7 +40,7 @@ export default function AddProduct() {
               <button
                 key={t}
                 onClick={() => setTab(t)}
-                className={`px-6 py-2.5 rounded-xl text-sm font-500 transition-all ${tab === t ? 'bg-[#13693A] text-white shadow-sm' : 'text-[#64748B] hover:text-[#13693A]'}`}
+                className={`px-6 py-2.5 rounded-xl text-sm font-500 transition-all ${tab === t ? 'bg-linear-to-tl from-[#13693A] via-[#8cbf44] to-[#13693A] text-white shadow-sm' : 'text-[#64748B] hover:text-[#13693A]'}`}
               >
                 {t === 'single' ? 'Single Product' : 'Multiple Products'}
               </button>
@@ -215,7 +215,7 @@ export default function AddProduct() {
                 <button
                   onClick={handleMultiSubmit}
                   disabled={verificationStatus === 'pending'}
-                  className="w-full py-2.5 bg-[#13693A] text-white rounded-xl text-sm font-500 hover:bg-[#0e4f2c] disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="mx-auto self-center p-2.5 bg-linear-to-l from-[#13693A] via-[#8cbf44] to-[#13693A] text-white rounded-xl text-sm font-500 hover:bg-[#0e4f2c] disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   Submit for Verification
                 </button>

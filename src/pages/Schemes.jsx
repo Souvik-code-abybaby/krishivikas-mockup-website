@@ -77,12 +77,13 @@ const categories = [
 const PER_PAGE = 4;
 
 export default function Schemes() {
+    const [page, setPage] = useState(1);
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [page]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
-  const [page, setPage] = useState(1);
+
 
   const filtered = allSchemes.filter((s) => {
     const matchSearch = s.title.toLowerCase().includes(search.toLowerCase());
@@ -96,7 +97,7 @@ export default function Schemes() {
   return (
     <main className="profile-page">
       <ProfileSidebar />
-      <div className="space-y-5">
+      <div className="space-y-5 m-7">
         {/* Filters */}
         <div className="bg-white rounded-2xl border border-[#E4E7EC] shadow-sm p-4 flex flex-wrap gap-3">
           <div className="relative flex-1 min-w-48">
@@ -161,9 +162,10 @@ export default function Schemes() {
                 <p className="text-sm text-[#64748B] flex-1 mb-4 line-clamp-3">
                   {s.desc}
                 </p>
-                <button className="self-start px-4 py-2 bg-[#13693A] text-white text-sm rounded-lg hover:bg-[#0e4f2c] font-500">
+                <button className="self-start px-4 py-2 bg-linear-to-r from-[#13693A] via-[#8cbf44] to-[#13693A] text-white text-sm rounded-lg hover:bg-[#0e4f2c] font-500">
                   Read More
                 </button>
+
               </div>
             </div>
           ))}
@@ -190,7 +192,7 @@ export default function Schemes() {
               <button
                 key={p}
                 onClick={() => setPage(p)}
-                className={`w-9 h-9 rounded-lg text-sm font-500 border ${page === p ? "bg-[#13693A] text-white border-[#13693A]" : "border-[#E4E7EC] text-[#64748B] hover:border-[#13693A]"}`}
+                className={`w-9 h-9 rounded-lg text-sm font-500 border ${page === p ? "bg-linear-to-tl from-[#13693A] via-[#8cbf44] to-[#13693A] text-white " : "border-[#E4E7EC] text-[#64748B] hover:border-[#13693A]"}`}
               >
                 {p}
               </button>

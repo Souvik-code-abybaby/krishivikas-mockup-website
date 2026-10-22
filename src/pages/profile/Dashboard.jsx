@@ -109,7 +109,7 @@ export default function Dashboard() {
             onChange={e => setEndDate(e.target.value)}
             className="text-sm border border-[#E4E7EC] rounded-lg px-3 py-1.5 text-[#1E293B] focus:outline-none focus:border-[#13693A] focus:ring-2 focus:ring-[#13693A]/10"
           />
-          <button className="px-4 py-1.5 bg-[#13693A] text-white text-sm rounded-lg hover:bg-[#0e4f2c] font-500">
+          <button className="px-4 py-1.5 bg-linear-to-tl from-[#13693A] via-[#8cbf44] to-[#13693A] text-white text-sm rounded-lg hover:bg-[#0e4f2c] font-500">
             Apply
           </button>
         </div>

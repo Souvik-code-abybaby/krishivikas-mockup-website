@@ -67,7 +67,7 @@ export default function NewBanner() {
             </div>
           </div>
 
-          <button className="w-full py-2.5 bg-[#13693A] text-white rounded-xl text-sm font-500 hover:bg-[#0e4f2c]">
+          <button className="w-full py-2.5 bg-linear-to-l from-[#13693A] via-[#8cbf44] to-[#13693A] text-white rounded-xl text-sm font-500 hover:bg-[#0e4f2c]">
             Submit Banner
           </button>
         </div>
