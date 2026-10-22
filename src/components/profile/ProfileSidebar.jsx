@@ -210,7 +210,7 @@ const crmItems = [
     label: "Subscription",
     path: "/profile/subscriptions",
   },
-  { icon: <Landmark size={18} />, label: "Schemes", path: "/profile/schemes" },
+  { icon: <Landmark size={18} />, label: "KV News", path: "/profile/news" },
 ];
 
 const MOBILE_QUERY = "(max-width: 768px)";

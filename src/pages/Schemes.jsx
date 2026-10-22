@@ -107,7 +107,7 @@ export default function Schemes() {
             />
             <input
               type="text"
-              placeholder="Search schemes..."
+              placeholder="Search news..."
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -174,7 +174,7 @@ export default function Schemes() {
         {filtered.length === 0 && (
           <div className="text-center py-16 text-[#64748B] bg-white rounded-2xl border border-[#E4E7EC]">
             <Search size={32} className="mx-auto mb-2 opacity-30" />
-            <p>No schemes found</p>
+            <p>No News found</p>
           </div>
         )}
 

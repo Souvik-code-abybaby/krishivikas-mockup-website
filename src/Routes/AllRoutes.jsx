@@ -63,8 +63,8 @@ const AllRoutes = () => {
           <Route path="/profile/leads" element={<LeadList />} />
           <Route path="/profile/banners" element={<BannerList />} />
           <Route path="/profile/new-banner" element={<NewBanner />} />
-           <Route path="/profile/subscriptions" element={<Subscription />} />
-                      <Route path="/profile/schemes" element={<Schemes />} />
+          <Route path="/profile/subscriptions" element={<Subscription />} />
+          <Route path="/profile/news" element={<Schemes />} />
           <Route path="/profile/leads/follow-up" element={<FollowUp />} />
           <Route path="/profile/leads/list" element={<NewLeads />} />
           <Route path="/product" element={<ProductPage />} />
