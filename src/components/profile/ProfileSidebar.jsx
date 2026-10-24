@@ -166,11 +166,7 @@ import Icon from "../Icon";
 const menu = [
   { label: "My Profile", path: "/profile" },
   { label: "My Posts", path: "/profile/posts" },
-  { label: "My Leads", path: "/profile/my-leads" },
-  { label: "My Boosts", path: "/profile/boosts" },
-  { label: "My Banner", path: "/profile/my-banner" },
-  { label: "Plan", path: "/profile/plan" },
-  { label: "Settings", path: "/profile/settings" },
+
 ];
 
 // Options coming from the DealerCRM sidebar
