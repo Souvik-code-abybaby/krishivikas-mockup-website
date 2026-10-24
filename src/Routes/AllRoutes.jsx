@@ -30,6 +30,7 @@ import BannerList from "../pages/banners/BannerList";
 import NewBanner from "../pages/banners/NewBanner";
 import Subscription from "../pages/Subscription";
 import Schemes from "../pages/Schemes";
+import MyPostsPage from "../pages/profile/MyPostsPage";
 const Layout = () => {
   const { pathname } = useLocation();
   return (
@@ -57,6 +58,7 @@ const AllRoutes = () => {
           <Route path="/compare" element={<ComparePage />} />
           <Route path="/category" element={<CategoryPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/posts" element={<MyPostsPage />} />
           <Route path="/profile/dashboard" element={<Dashboard />} />
           <Route path="/profile/products" element={<Products />} />
           <Route path="/profile/add-product" element={<AddProduct />} />
