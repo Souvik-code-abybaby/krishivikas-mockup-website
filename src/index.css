@@ -1958,7 +1958,7 @@ footer button:not(.brand) {
 .main-nav { display: none; }   /* old static-icon bar is no longer used on mobile */
 
 .mobile-category-nav {
-  display: flex;
+  display: none;
   position: fixed;
   left: 0;
   right: 0;
